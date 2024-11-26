@@ -188,17 +188,28 @@ int main() {
                 }
                 break;
             }
-                            // Mostrar medicos por servicio
+            // Mostrar medicos por servicio
             case 7: {
                 std::string servicioNombre;
                 std::cout << "Nombre del servicio: ";
                 std::getline(std::cin, servicioNombre);
 
+                bool servicioEncontrado = false;
                 for (auto& servicio : servicios) {
-                    if (servicio->getNombreServicio() == servicioNombre) {
-                        servicio->listarMedicosPorServicio();
+                    std::string servicioActual = servicio->getNombreServicio();
+                    std::transform(servicioActual.begin(), servicioActual.end(), 
+                    servicioActual.begin(), ::tolower);
+                    std::transform(servicioNombre.begin(), servicioNombre.end(), 
+                    servicioNombre.begin(), ::tolower);
+
+                    if (servicioActual == servicioNombre) {
+                        servicio->listarMedicosPorServicio();  
+                        servicioEncontrado = true;
                         break;
                     }
+                }
+                if (!servicioEncontrado) {
+                    std::cout << "Servicio no encontrado.\n";
                 }
                 break;
             }
