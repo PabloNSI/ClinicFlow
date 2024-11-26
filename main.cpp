@@ -9,19 +9,18 @@
 #include "servicio.h"
 #include "reporte.h"
 
-Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, const std::string& idBuscado) {
-    for (auto& p : pacientes) {
-        if (p->getID() == idBuscado) {
-            return p;
+Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, const std::string& pacienteID) {
+    for (auto& paciente : pacientes) {
+        if (paciente->getID() == pacienteID) {
+            return paciente;
         }
     }
     return nullptr;
 }
-
-Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, const std::string& idBuscado) {
-    for (auto& m : medicos) {
-        if (m->getID() == idBuscado) {
-            return m;
+Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, const std::string& medicoID) {
+    for (auto& medico : medicos) {
+        if (medico->getID() == medicoID) {
+            return medico;
         }
     }
     return nullptr;
@@ -67,7 +66,7 @@ int main() {
                 pacientes.push_back(nuevoPaciente);
                 break;
             }
-                                        // Registrar medico
+                                // Registrar medico
             case 2: {
                 std::string nombre, ID, especialidad;
                 bool disponibilidad;
@@ -84,7 +83,7 @@ int main() {
                 medicos.push_back(nuevoMedico);
                 break;
             }
-                                        // Ver pacientes registrados
+                            // Ver pacientes registrados
             case 3: {
                 std::ifstream archivo("pacientes.txt");
                 if (archivo.is_open()) {
@@ -99,7 +98,7 @@ int main() {
                 }
                 break;
             }
-                                        // Ver medicos registrados
+                            // Ver medicos registrados
             case 4: {
                 std::ifstream archivo("medicos.txt");
                 if (archivo.is_open()) {
@@ -114,7 +113,7 @@ int main() {
                 }
                 break;
             }
-                                        // Asignar cita en una fecha determinada
+                            // Asignar cita en una fecha determinada
             case 5: {
                 std::string fecha;
                 int urgencia;
@@ -129,8 +128,8 @@ int main() {
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 }
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpia el buffer
-                // Solicitar ID
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                // Solicitar IDs
                 std::cout << "ID del paciente: ";
                 std::getline(std::cin >> std::ws, pacienteID);
                 std::cout << "ID del medico: ";
@@ -148,6 +147,10 @@ int main() {
                     std::cout << "Cita asignada correctamente.\n";
                 } else {
                     std::cout << "Paciente o medico no encontrado. \n";
+                    std :: cout << pacienteID << " " << medicoID << "\n";
+                    std::cout << "Pacientes registrados: " << pacientes.size() << "\n";
+                    std::cout << "Médicos registrados: " << medicos.size() << "\n";
+
                 }
                 break;
             }
@@ -159,7 +162,7 @@ int main() {
                 std::cout << "ID del medico: ";
                 std::getline(std::cin >> std::ws, medicoID);
 
-                std::cout << "Buscando medico con ID: [" << medicoID << "]\n";  // Depuración del ID
+                std::cout << "Buscando medico con ID: [" << medicoID << "]\n";
                 // Buscar medico por ID
                 Medico* medico = nullptr;
                 for (auto& m : medicos) {
@@ -169,15 +172,22 @@ int main() {
                     }
                 }
                 if (medico) {
+                    std::cout << "Medico encontrado: " << medico->getNombre() << "\n";
                     // Buscar servicio por nombre
                     Servicio* servicio = nullptr;
                     for (auto& s : servicios) {
-                        if (s->getNombreServicio() == servicioNombre) {
+                        std::string servicioActual = s->getNombreServicio();
+                        // Convertir ambos a minúsculas para compararlos
+                        std::transform(servicioActual.begin(), servicioActual.end(), servicioActual.begin(), ::tolower);
+                        std::transform(servicioNombre.begin(), servicioNombre.end(), servicioNombre.begin(), ::tolower);
+                        
+                        if (servicioActual == servicioNombre) {
                             servicio = s;
                             break;
                         }
                     }
                     if (!servicio) {
+                        std::cout << "Servicio no encontrado. Creando nuevo servicio...\n";
                         servicio = new Servicio(servicioNombre);
                         servicios.push_back(servicio);
                     }
