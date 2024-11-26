@@ -54,8 +54,5 @@ GestorArchivos gestor;
     std::vector<Paciente*> pacientesRecuperados;
     gestor.recuperarDatosPacientes(pacientesRecuperados);
 
-    for (auto paciente : pacientesRecuperados) {
-        std::cout << "Paciente: " << paciente->getNombre() << ", ID: " << paciente->getID() << std::endl;
-    }
     return 0;
 }
