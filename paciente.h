@@ -18,7 +18,16 @@ public:
         : nombre(_nombre), ID(_ID), fechaIngreso(_fechaIngreso) {}
 
     void registrarPaciente() {
-        std::cout << "Paciente " << nombre << " registrado." << std::endl;
+        std::ofstream archivo("pacientes.txt", std::ios::app); 
+        if (archivo.is_open()) {
+            archivo << "Nombre: " << nombre << "\n";
+            archivo << "ID: " << ID << "\n";
+            archivo << "Fecha de ingreso: " << fechaIngreso << "\n\n";
+        } else {
+            std::cerr << "Error al abrir el archivo para registrar el paciente.\n";
+        }
+
+        archivo.close();
     }
 
     void eliminarPaciente() {
@@ -35,6 +44,7 @@ public:
         citas.push_back(cita);
     }
 
-    std::string getNombre() { return nombre; }
-    std::string getID() { return ID; }
+    std::string getNombre() const { return nombre; }
+    std::string getID() const { return ID; }
+    std::string getFechaIngreso() const { return fechaIngreso; }
 };

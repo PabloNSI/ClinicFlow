@@ -1,2 +1,8 @@
-Juan Perez,0001
-Ana Gomez,0002
+Nombre: Pablo Soto
+ID: 0101
+Fecha de ingreso: 26-11-2024
+
+Nombre: Jesus Medina
+ID: 1010
+Fecha de ingreso: 25-11-2024
+

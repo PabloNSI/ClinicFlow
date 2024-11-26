@@ -1,8 +1,10 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
-#pragma once
+#include "medico.h"
 
 class Servicio {
 private:
@@ -22,5 +24,18 @@ public:
         for (auto medico : medicos) {
             std::cout << "- " << medico->getNombre() << " (Especialidad: " << medico->getEspecialidad() << ")\n";
         }
+    }
+
+    void buscarMedicosPorEspecialidad(const std::string& especialidad) {
+        std::cout << "Medicos en " << nombreServicio << " con especialidad " << especialidad << ":\n";
+        for (auto medico : medicos) {
+            if (medico->getEspecialidad() == especialidad) {
+                std::cout << "- " << medico->getNombre() << "\n";
+            }
+        }
+    }
+
+    std::string getNombreServicio() const {
+        return nombreServicio;
     }
 };
