@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <set>
+
 #include "citaMedica.h"
 #include "gestorArchivos.h"
 #include "paciente.h"
@@ -68,6 +70,21 @@ void cargarMedicos(std::vector<Medico*>& medicos) {
         archivo.close();
     } else {
         std::cerr << "No se pudo abrir el archivo medicos.txt.\n";
+    }
+}
+
+std::vector<Medico*> medicos;
+std::vector<Servicio*> servicios;
+void cargarServicios() {
+    std::ifstream archivoServicios("servicios.txt");
+    if (archivoServicios.is_open()) {
+        std::string nombreServicio;
+        while (std::getline(archivoServicios, nombreServicio)) {
+            servicios.push_back(new Servicio(nombreServicio));
+        }
+        archivoServicios.close();
+    } else {
+        std::cerr << "Error al abrir el archivo de servicios.\n";
     }
 }
 
@@ -233,7 +250,7 @@ int main() {
                         // Convertir ambos a minus para compararlos
                         std::transform(servicioActual.begin(), servicioActual.end(), servicioActual.begin(), ::tolower);
                         std::transform(servicioNombre.begin(), servicioNombre.end(), servicioNombre.begin(), ::tolower);
-                        
+
                         if (servicioActual == servicioNombre) {
                             servicio = s;
                             break;
@@ -251,31 +268,62 @@ int main() {
                 }
                 break;
             }
-                                        // Mostrar medicos por servicio
+                                    // Mostrar medicos por servicio 
             case 7: {
                 std::string servicioNombre;
                 std::cout << "Nombre del servicio: ";
-                std::getline(std::cin, servicioNombre);
+                std::getline(std::cin >> std::ws, servicioNombre);
 
+                // Convertir a minus para comparacion
+                std::transform(servicioNombre.begin(), servicioNombre.end(), servicioNombre.begin(), ::tolower);
+
+                std::ifstream archivo("medicos_por_servicio.txt");
+                if (!archivo.is_open()) {
+                    std::cerr << "Error al abrir el archivo medicos_por_servicio.txt.\n";
+                    break;
+                }
+
+                std::string linea, servicioActual, medicoActual, idActual;
                 bool servicioEncontrado = false;
-                for (auto& servicio : servicios) {
-                    std::string servicioActual = servicio->getNombreServicio();
-                    std::transform(servicioActual.begin(), servicioActual.end(), 
-                    servicioActual.begin(), ::tolower);
-                    std::transform(servicioNombre.begin(), servicioNombre.end(), 
-                    servicioNombre.begin(), ::tolower);
+                std::set<std::string> medicosUnicos; // Para evitar duplicados
 
-                    if (servicioActual == servicioNombre) {
-                        servicio->listarMedicosPorServicio();  
-                        servicioEncontrado = true;
-                        break;
+                while (std::getline(archivo, linea)) {
+                    if (linea.rfind("Servicio: ", 0) == 0) {  // Linea de servicio
+                        servicioActual = linea.substr(10);   // Extraer el nombre del servicio
+                        std::transform(servicioActual.begin(), servicioActual.end(), servicioActual.begin(), ::tolower);
+                    } else if (linea.rfind("Medico: ", 0) == 0) {  // Línea de médico
+                        medicoActual = linea.substr(8);  // Extraer el nombre del médico
+                    } else if (linea.rfind("ID: ", 0) == 0) {  // Línea de ID
+                        idActual = linea.substr(4);  // Extraer el ID
+
+                        // Verificar si ya tenemos un servicio válido
+                        if (!servicioActual.empty() && servicioActual == servicioNombre) {
+                            if (!servicioEncontrado) {
+                                std::cout << "Medicos en el servicio " << servicioNombre << ":\n";
+                                servicioEncontrado = true;
+                            }
+
+                            // Validar que tanto el medico como el ID esten completos
+                            if (!medicoActual.empty() && !idActual.empty()) {
+                                std::string claveMedico = medicoActual + " (ID: " + idActual + ")";
+                                if (medicosUnicos.find(claveMedico) == medicosUnicos.end()) {
+                                    medicosUnicos.insert(claveMedico);
+                                    std::cout << "- " << claveMedico << "\n";
+                                }
+                            }
+                        }
+                        // Reiniciar las variables de médico e ID para evitar arrastrar datos incorrectos
+                        medicoActual.clear();
+                        idActual.clear();
                     }
                 }
                 if (!servicioEncontrado) {
                     std::cout << "Servicio no encontrado.\n";
                 }
+                archivo.close();
                 break;
             }
+
                             // Mostrar especialidad de cada medico
             case 8: {
                 std::cout << "Especialidad de cada medico:\n";
