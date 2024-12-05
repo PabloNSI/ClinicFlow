@@ -1,0 +1,4 @@
+Nombre: Pablo Soto
+ID: 0101
+Fecha de ingreso: 29-03-2021
+

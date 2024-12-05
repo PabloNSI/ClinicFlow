@@ -16,6 +16,7 @@ private:
     std::vector<CitaMedica*> citas;
 
 public:
+    // Constructor
     Medico(std::string _nombre, std::string _ID, std::string _especialidad, bool _disponibilidad)
         : nombre(_nombre), ID(_ID), especialidad(_especialidad), disponibilidad(_disponibilidad) {}
 
@@ -31,38 +32,33 @@ public:
             std::cerr << "Error al abrir el archivo para registrar el médico.\n";
         }
     }
-
-    void modificarMedico(std::string nuevoNombre, std::string nuevaEspecialidad) {
+    void modificarMedico(const std::string& nuevoNombre, const std::string& nuevaEspecialidad) {
         nombre = nuevoNombre;
         especialidad = nuevaEspecialidad;
-        std::cout << "Médico modificado a " << nombre << " con especialidad " << especialidad << std::endl;
+        std::cout << "Médico modificado a " << nombre << " con especialidad " << especialidad << "\n";
     }
-
     void añadirCita(CitaMedica* cita) {
         citas.push_back(cita);
     }
-
-    std::string getNombre() { return nombre; }
-    std::string getEspecialidad() { return especialidad; }
-    std::string getID() { return ID; }
+    // Metodos de consulta
+    std::string getNombre() const { return nombre; }
+    std::string getEspecialidad() const { return especialidad; }
+    std::string getID() const { return ID; }
     bool getDisponibilidad() const { return disponibilidad; }
-
-    // Nueva función para normalizar y comparar los IDs ignorando mayúsculas y espacios.
+    // Metodo estatico para obtener el número de campos requeridos
+    static int camposRequeridos() { return 4; } // Nombre, ID, Especialidad, Disponibilidad
+    // Metodo para comparar IDs ignorando mayus y espacios
     bool compararID(const std::string& otroID) const {
-        // Normalizamos ambos ID a minúsculas
-        std::string id1 = ID;
-        std::string id2 = otroID;
-
-        // Eliminar espacios extra en ambos IDs
+        std::string id1 = ID, id2 = otroID;
+        // Eliminar espacios y convertir a minus
         id1.erase(0, id1.find_first_not_of(' '));
         id1.erase(id1.find_last_not_of(' ') + 1);
         id2.erase(0, id2.find_first_not_of(' '));
         id2.erase(id2.find_last_not_of(' ') + 1);
 
-        // Convertir a minúsculas
         std::transform(id1.begin(), id1.end(), id1.begin(), ::tolower);
         std::transform(id2.begin(), id2.end(), id2.begin(), ::tolower);
 
-        return id1 == id2;  // Compara los IDs normalizados
+        return id1 == id2;
     }
 };

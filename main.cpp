@@ -9,21 +9,66 @@
 #include "servicio.h"
 #include "reporte.h"
 
-Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, const std::string& pacienteID) {
-    for (auto& paciente : pacientes) {
-        if (paciente->getID() == pacienteID) {
+Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, const std::string& id) {
+    for (Paciente* paciente : pacientes) {
+        if (paciente->getID() == id) {
             return paciente;
         }
     }
     return nullptr;
 }
-Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, const std::string& medicoID) {
-    for (auto& medico : medicos) {
-        if (medico->getID() == medicoID) {
+Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, const std::string& id) {
+    for (Medico* medico : medicos) {
+        if (medico->compararID(id)) {
             return medico;
         }
     }
     return nullptr;
+}
+void cargarPacientes(std::vector<Paciente*>& pacientes) {
+    std::ifstream archivo("pacientes.txt");
+    if (archivo.is_open()) {
+        std::string linea, nombre, ID, fechaIngreso;
+
+        while (std::getline(archivo, linea)) {
+            if (linea.find("Nombre: ") != std::string::npos) {
+                nombre = linea.substr(8); // Extraer el nombre
+            } else if (linea.find("ID: ") != std::string::npos) {
+                ID = linea.substr(4); // Extraer el ID
+            } else if (linea.find("Fecha de ingreso: ") != std::string::npos) {
+                fechaIngreso = linea.substr(18); // Extraer la fecha de ingreso
+                // Crear un nuevo objeto Paciente y añadirlo al vector
+                pacientes.push_back(new Paciente(nombre, ID, fechaIngreso));
+            }
+        }
+        archivo.close();
+    } else {
+        std::cerr << "No se pudo abrir el archivo pacientes.txt.\n";
+    }
+}
+void cargarMedicos(std::vector<Medico*>& medicos) {
+    std::ifstream archivo("medicos.txt");
+    if (archivo.is_open()) {
+        std::string linea, nombre, ID, especialidad;
+        bool disponibilidad;
+
+        while (std::getline(archivo, linea)) {
+            if (linea.find("Nombre: ") != std::string::npos) {
+                nombre = linea.substr(8); // Extraer el nombre
+            } else if (linea.find("ID: ") != std::string::npos) {
+                ID = linea.substr(4); // Extraer el ID
+            } else if (linea.find("Especialidad: ") != std::string::npos) {
+                especialidad = linea.substr(13); // Extraer la especialidad
+            } else if (linea.find("Disponibilidad: ") != std::string::npos) {
+                disponibilidad = (linea.substr(15) == "Si"); // Convertir a booleano
+                // Crear un nuevo objeto Medico y añadirlo al vector
+                medicos.push_back(new Medico(nombre, ID, especialidad, disponibilidad));
+            }
+        }
+        archivo.close();
+    } else {
+        std::cerr << "No se pudo abrir el archivo medicos.txt.\n";
+    }
 }
 
 int main() {
@@ -31,9 +76,9 @@ int main() {
     std::vector<Medico*> medicos;
     std::vector<Servicio*> servicios;
     std::vector<CitaMedica*> citas;
-
     int opcion;
-
+    cargarPacientes(pacientes);
+    cargarMedicos(medicos);
     do {
         std::cout << "\n--- MENU ---\n";
         std::cout << "1. Registrar paciente\n";
@@ -109,7 +154,7 @@ int main() {
                     }
                     archivo.close();
                 } else {
-                    std::cerr << "Error al abrir el archivo de médicos.\n";
+                    std::cerr << "Error al abrir el archivo de medicos.\n";
                 }
                 break;
             }
@@ -118,26 +163,36 @@ int main() {
                 std::string fecha;
                 int urgencia;
                 std::string pacienteID, medicoID;
-                // Solicitar fecha
+
                 std::cout << "Fecha de la cita: ";
                 std::getline(std::cin >> std::ws, fecha);
-                // Solicitar urgencia
+
                 std::cout << "Urgencia (1-5): ";
                 while (!(std::cin >> urgencia) || urgencia < 1 || urgencia > 5) {
-                    std::cout << "Por favor, ingrese un valor válido para la urgencia (1-5): ";
+                    std::cout << "Por favor, ingrese un valor valido para la urgencia (1-5): ";
                     std::cin.clear();
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 }
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                // Solicitar IDs
+
                 std::cout << "ID del paciente: ";
                 std::getline(std::cin >> std::ws, pacienteID);
                 std::cout << "ID del medico: ";
                 std::getline(std::cin >> std::ws, medicoID);
-                // Buscar paciente y médico
+                std::cout << "Pacientes cargados:\n";
+
+                for (Paciente* p : pacientes) {
+                    std::cout << "ID: " << p->getID() << "\n";
+                }
+
+                std::cout << "Medicos cargados:\n";
+                for (Medico* m : medicos) {
+                    std::cout << "ID: " << m->getID() << "\n";
+                }
+
                 Paciente* paciente = buscarPacientePorID(pacientes, pacienteID);
                 Medico* medico = buscarMedicoPorID(medicos, medicoID);
-                // Validar y asignar cita
+
                 if (paciente && medico) {
                     CitaMedica* nuevaCita = new CitaMedica(fecha, urgencia, paciente, medico);
                     nuevaCita->asignarCita();
@@ -146,11 +201,9 @@ int main() {
                     medico->añadirCita(nuevaCita);
                     std::cout << "Cita asignada correctamente.\n";
                 } else {
-                    std::cout << "Paciente o medico no encontrado. \n";
-                    std :: cout << pacienteID << " " << medicoID << "\n";
+                    std::cout << "Paciente o medico no encontrado.\n";
                     std::cout << "Pacientes registrados: " << pacientes.size() << "\n";
-                    std::cout << "Médicos registrados: " << medicos.size() << "\n";
-
+                    std::cout << "Medicos registrados: " << medicos.size() << "\n";
                 }
                 break;
             }
@@ -177,7 +230,7 @@ int main() {
                     Servicio* servicio = nullptr;
                     for (auto& s : servicios) {
                         std::string servicioActual = s->getNombreServicio();
-                        // Convertir ambos a minúsculas para compararlos
+                        // Convertir ambos a minus para compararlos
                         std::transform(servicioActual.begin(), servicioActual.end(), servicioActual.begin(), ::tolower);
                         std::transform(servicioNombre.begin(), servicioNombre.end(), servicioNombre.begin(), ::tolower);
                         
@@ -198,7 +251,7 @@ int main() {
                 }
                 break;
             }
-            // Mostrar medicos por servicio
+                                        // Mostrar medicos por servicio
             case 7: {
                 std::string servicioNombre;
                 std::cout << "Nombre del servicio: ";

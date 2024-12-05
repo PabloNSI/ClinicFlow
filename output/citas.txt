@@ -1,0 +1,10 @@
+Fecha: 23-02-2021
+Urgencia: 3
+Paciente: Pablo Soto (ID: 0101)
+Médico: Elon Musk (ID: 1010)
+----------------------
+Fecha: 05-12-2024
+Urgencia: 4
+Paciente: Pablo Soto (ID: 0101)
+Médico: Jesus Zurita (ID: 1234)
+----------------------
