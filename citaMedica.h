@@ -7,6 +7,8 @@
 #include "paciente.h"
 #include "medico.h"
 
+Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int id);
+
 class CitaMedica {
 private:
     std::string fecha;
@@ -38,14 +40,15 @@ public:
     Medico* getMedico() const { return medico; }
 };
 
-Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, const std::string& pacienteID);
+Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int pacienteID);
 Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, const std::string& medicoID);
 
 // Menú para registrar la cita
 void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medicos, std::vector<CitaMedica*>& citas) {
     std::string fecha;
     int urgencia;
-    std::string pacienteID, medicoID;
+    int pacienteID;
+    std::string  medicoID;
     // Solicitar fecha
     std::cout << "Fecha de la cita: ";
     std::getline(std::cin >> std::ws, fecha);
@@ -59,7 +62,7 @@ void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medi
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Limpia el buffer
     // Solicitar ID del paciente y médico
     std::cout << "ID del paciente: ";
-    std::getline(std::cin >> std::ws, pacienteID);
+    std::cin >>  pacienteID;
     std::cout << "ID del médico: ";
     std::getline(std::cin >> std::ws, medicoID);
     // Buscar paciente y médico por ID

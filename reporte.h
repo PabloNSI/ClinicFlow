@@ -49,7 +49,7 @@ public:
     }
 
 private:
-    bool tieneEnfermedadCronica(Paciente* paciente) {
+    bool tieneEnfermedadCronica(Paciente*) {
         return true;
     }
 };
