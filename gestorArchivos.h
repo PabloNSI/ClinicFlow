@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 #include "paciente.h"
 #include "medico.h"
 #include "servicio.h"
@@ -57,9 +58,10 @@ void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
     }
 
     for (Medico* medico : medicos) {
-        archivo << "Nombre: " << medico->getNombre() << "\n";
-            archivo << "ID: " << medico->getID() << "\n";
-             archivo << "Especialidad; " << medico->getEspecialidad() << "\n";
+        archivo << "Dr. " << medico->getNombre() << "\n";
+            // Como el dato tipo int omite los ceros a la izq, se usa setw y setfill para mostrarlos
+            archivo << std::setw(4) << std::setfill('0') << "ID: " << medico->getID() << "\n";
+             archivo << "Especialidad: " << medico->getEspecialidad() << "\n";
              archivo << "Disponibilidad: " << medico->getDisponibilidad()<< "\n";
              archivo << "\n";
     }
@@ -77,8 +79,8 @@ void recuperarDatosMedicos(std::vector<Medico*>& medicos) {
         std::string linea, nombre, especialidad;
         int ID;
         while (std::getline(archivo, linea)){
-            if (linea.find("Nombre: ") != std::string::npos) {
-                nombre = linea.substr(8);
+            if (linea.find("Dr. ") != std::string::npos) {
+                nombre = linea.substr(4);
             } else if (linea.find("ID: ") != std::string::npos) {
                 ID = std::stoi(linea.substr(4));
             } else if (linea.find("Especialidad: ") != std::string::npos){

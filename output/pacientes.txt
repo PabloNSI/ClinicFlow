@@ -1,0 +1,12 @@
+Nombre: Mario Ramirez
+ID: 1224
+Fecha de ingreso: 23-12-2024
+
+Nombre: Eduardo Sanchez
+ID: 3564
+Fecha de ingreso: 13-11-2024
+
+Nombre: Jesus Navas
+ID: 1605
+Fecha de ingreso: 06-10-2024
+

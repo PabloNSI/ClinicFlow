@@ -26,7 +26,7 @@ public:
             archivo << "Fecha: " << fecha << "\n";
             archivo << "Urgencia: " << urgencia << "\n";
             archivo << "Paciente: " << paciente->getNombre() << " (ID: " << paciente->getID() << ")\n";
-            archivo << "Médico: " << medico->getNombre() << " (ID: " << medico->getID() << ")\n";
+            archivo << "Medico: " << medico->getNombre() << " (ID: " << medico->getID() << ")\n";
             archivo << "----------------------\n";
             archivo.close();
         } else {
@@ -55,7 +55,7 @@ void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medi
     // Solicitar urgencia
     std::cout << "Urgencia (1-5): ";
     while (!(std::cin >> urgencia) || urgencia < 1 || urgencia > 5) {
-        std::cout << "Por favor, ingrese un valor válido para la urgencia (1-5): ";
+        std::cout << "Por favor, ingrese un valor valido para la urgencia (1-5): ";
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
@@ -63,7 +63,7 @@ void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medi
     // Solicitar ID del paciente y médico
     std::cout << "ID del paciente: ";
     std::cin >>  pacienteID;
-    std::cout << "ID del médico: ";
+    std::cout << "ID del medico: ";
     std::cin >> medicoID;
     // Buscar paciente y médico por ID
     Paciente* paciente = buscarPacientePorID(pacientes, pacienteID);
@@ -80,6 +80,6 @@ void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medi
         medico->añadirCita(nuevaCita);
         std::cout << "Cita asignada correctamente.\n";
     } else {
-        std::cout << "Paciente o médico no encontrado. \n";
+        std::cout << "Paciente o medico no encontrado. \n";
     }
 }

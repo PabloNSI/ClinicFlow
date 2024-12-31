@@ -93,64 +93,28 @@ int main() {
                             std::cout << "\n--- Lista de Pacientes ---\n";
                             if (pacientes.empty()) {
                                 std::cout << "No hay pacientes registrados.\n";
-                            } 
-                            else {
+                            }else {
                                 for (const auto& paciente : pacientes) {
                                     paciente->mostrarPaciente();
                                 }
-                            }
-                            break;
+                            }break;
                         }
                                         // Editar pacientes
                         case 2: {
-                            int idPaciente;
-                            std::cout << "Ingrese el ID del paciente a editar: ";
-                            std:: cin >> idPaciente;
-
-                            auto it = std::find_if(pacientes.begin(), pacientes.end(),
-                                [&idPaciente](Paciente* p) { return p->getID() == idPaciente; });
-
-                            if (it != pacientes.end()) {
-                                (*it)->editarPaciente();
-                            } else {
-                                std::cout << "Paciente no encontrado.\n";
+                            for (Paciente* paciente : pacientes) {
+                                paciente->editarPaciente(pacientes);
+                                break;
                             }
                             break;
                         }
                                         // Eliminar pacientes
                         case 3: {
-                            int idPaciente;
-                            std::cout << "Ingrese el ID del paciente a eliminar: ";
-                            std:: cin >> idPaciente;
-
-                            std::cout << "Estas seguro de eliminar al paciente con ID " << idPaciente 
-                            << "? (1 para confirmar, 0 para cancelar): ";
-                            int confirmar;
-                            std::cin >> confirmar;
-                            std::cin.ignore(); // Limpiar el buffer de entrada
-
-                            if (confirmar == 1) {
-                                Paciente::eliminarPaciente(pacientes, idPaciente);
-                                std::cout << "Paciente eliminado correctamente.\n";
-                            } else {
-                                std::cout << "Eliminacion cancelada.\n";
-                            }
+                            Paciente::eliminarPaciente(pacientes);
                             break;
                         }
                                         // Registrar paciente   
                         case 4: {
-                            std::string nombre, fechaIngreso;
-                            int ID;
-                            std::cout << "Nombre del paciente: ";
-                            std::cin.ignore();
-                            std::getline(std::cin >> std::ws, nombre);
-                            std::cout << "ID del paciente (1234): ";
-                            std::cin >> ID;
-                            std::cout << "Ingrese la fecha de ingreso (dd-MM-AAAA): ";  
-                            std::cin.ignore();
-                            std::getline(std::cin, fechaIngreso);
-
-                            Paciente* nuevoPaciente = new Paciente(nombre, ID, fechaIngreso);
+                            Paciente* nuevoPaciente = new Paciente();
                             nuevoPaciente->registrarPaciente();
                             pacientes.push_back(nuevoPaciente);
                             break;
@@ -185,82 +149,35 @@ int main() {
                             std::cout << "\n--- Lista de Medicos ---\n";
                             if (medicos.empty()) {
                                 std::cout << "No hay medicos en el sistema.\n";
-                            } 
-                            else {
+                            }else {
                                 for (const auto& medico : medicos) {
                                     medico->mostrarMedico();
                                 }
-                            }
-                            break;
+                            }break;
                         }
                                     // Editar medicos
                         case 2: {
-                            int idMedico;
-                            std::cout << "Ingrese el ID del medico a editar: ";
-                            std:: cin >> idMedico;
-
-                            auto it = std::find_if(medicos.begin(), medicos.end(),
-                                [&idMedico](Medico* m) { return m->getID() == idMedico; });
-
-                            if (it != medicos.end()) {
-                                (*it)->modificarMedico();
-                            } else {
-                                std::cout << "Medico no encontrado.\n";
+                            for (Medico* medico : medicos) {
+                                medico->modificarMedico(medicos);
+                                break;
                             }
-                            break;
+                            break; 
                         }
                                     // Eliminar medico
                         case 3: {
-                            int idMedico;
-                            std::cout << "Ingrese el ID del medico a eliminar: ";
-                            std:: cin >> idMedico;
-
-                            std::cout << "Estas seguro de eliminar al medico con ID " << idMedico 
-                            << "? (1 para confirmar, 0 para cancelar): ";
-                            int confirmar;
-                            std::cin >> confirmar;
-                            std::cin.ignore(); // Limpiar el buffer de entrada
-
-                            if (confirmar == 1) {
-                                Medico::eliminarMedico(medicos, idMedico);
-                                std::cout << "Medico eliminado correctamente.\n";
-                            } else {
-                                std::cout << "Eliminacion cancelada.\n";
-                            }
+                            Medico::eliminarMedico(medicos);
                             break;
                         }
                                     // Registrar medico
-                        case 4: { // Registrar médico
-                            std::string nombre, especialidad;
-                            int ID;
-                            bool disponibilidad;
-                            std::cout << "Nombre del medico: ";
-                            std::getline(std::cin, nombre);
-                            std::cout << "ID del medico (1234): ";
-                            while (!(std::cin >> ID)) {
-                                std::cout << "ID invalido. Intenta de nuevo: ";
-                                std::cin.clear();
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                            }
-                            std::cin.ignore();
-                            std::cout << "Especialidad del medico: ";
-                            std::getline(std::cin, especialidad);
-                            std::cout << "Medico disponible? (1 para si, 0 para no): ";
-                            while (!(std::cin >> disponibilidad)) {
-                                std::cout << "Entrada invalida. Intenta de nuevo (1 para si, 0 para no): ";
-                                std::cin.clear();
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                            }
-
-                            Medico* nuevoMedico = new Medico(nombre, ID, especialidad, disponibilidad);
-                            nuevoMedico->registrarMedico();
-                            medicos.push_back(nuevoMedico);
-
-                            std::cout << "Medico registrado correctamente.\n";
+                        case 4: {
+                            Medico nuevoMedico;
+                            nuevoMedico.registrarMedico();
+                            medicos.push_back(new Medico(nuevoMedico));
                             break;
                         }
                     }
                 } while (subopcion != 0);
+                break;
             }
                             // Asignar cita en una fecha determinada
             case 3: {
