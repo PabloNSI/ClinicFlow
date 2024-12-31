@@ -5,60 +5,79 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
-#include "citaMedica.h"
+
+class CitaMedica;
 
 class Medico {
 private:
     std::string nombre;
-    std::string ID;
+    int ID;
     std::string especialidad;
     bool disponibilidad;
     std::vector<CitaMedica*> citas;
 
 public:
     // Constructor
-    Medico(std::string _nombre, std::string _ID, std::string _especialidad, bool _disponibilidad)
-        : nombre(_nombre), ID(_ID), especialidad(_especialidad), disponibilidad(_disponibilidad) {}
+    Medico(std::string& nombre, int ID, const std::string& especialidad, bool disponibilidad)
+        : nombre(nombre), ID(ID), especialidad(especialidad), disponibilidad(disponibilidad) {}
+
+    void setNombre(const std::string& nombre) { this->nombre = nombre; }
+    void setID(const int& ID) { this->ID = ID; }
+    void setEspecialidad(const std::string& especialidad){ this->especialidad = especialidad; }
+    void setDisponibilidad(const bool& disponibilidad){ this->disponibilidad = disponibilidad; }
+
+    void mostrarMedico() const {
+        std::cout << "Nombre: " << nombre << ", ID: " << ID << ", Especialidad: " << especialidad 
+        << ", Disponibilidad: " << disponibilidad <<std::endl;
+    }
 
     void registrarMedico() {
-        std::ofstream archivo("medicos.txt", std::ios::app);
-        if (archivo.is_open()) {
-            archivo << "Nombre: " << nombre << "\n";
-            archivo << "ID: " << ID << "\n";
-            archivo << "Especialidad: " << especialidad << "\n";
-            archivo << "Disponibilidad: " << (disponibilidad ? "Sí" : "No") << "\n\n";
-            archivo.close();
-        } else {
-            std::cerr << "Error al abrir el archivo para registrar el médico.\n";
-        }
+        std::cout << "Medico registrado correctamente: " << nombre << " (ID: " << ID << ")" << std::endl;
     }
-    void modificarMedico(const std::string& nuevoNombre, const std::string& nuevaEspecialidad) {
-        nombre = nuevoNombre;
-        especialidad = nuevaEspecialidad;
-        std::cout << "Médico modificado a " << nombre << " con especialidad " << especialidad << "\n";
+
+void modificarMedico() {
+    std::cout << "Ingrese el nuevo nombre del medico: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, nombre);
+    std::cout << "Ingrese el nuevo ID del medico (1234): ";
+    while (!(std::cin >> ID)) {
+        std::cout << "ID invalido. Intenta de nuevo: ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    std::cout << "Ingrese la nueva especialidad del medico: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, especialidad);
+    std::cout << "Esta disponible el medico? (1 = Si / 0 = No): ";
+    while (!(std::cin >> disponibilidad)) {
+        std::cout << "Entrada invalida. Intenta de nuevo (1 = Si / 0 = No): ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    std::cout << "Medico modificado correctamente.\n";
+}
+
+        static void eliminarMedico(std::vector<Medico*>& medicos, int& idMedico) {
+        auto it = std::remove_if(medicos.begin(), medicos.end(), [&idMedico](Medico* m) {
+            return m->getID() == idMedico;
+        });
+
+        if (it != medicos.end()) {
+            delete *it;
+            medicos.erase(it);
+        }
     }
     void añadirCita(CitaMedica* cita) {
         citas.push_back(cita);
     }
-    // Metodos de consulta
+    // Metodos de consulta (getters)
     std::string getNombre() const { return nombre; }
     std::string getEspecialidad() const { return especialidad; }
-    std::string getID() const { return ID; }
+    int getID() const { return ID; }
     bool getDisponibilidad() const { return disponibilidad; }
     // Metodo estatico para obtener el número de campos requeridos
     static int camposRequeridos() { return 4; } // Nombre, ID, Especialidad, Disponibilidad
-    // Metodo para comparar IDs ignorando mayus y espacios
-    bool compararID(const std::string& otroID) const {
-        std::string id1 = ID, id2 = otroID;
-        // Eliminar espacios y convertir a minus
-        id1.erase(0, id1.find_first_not_of(' '));
-        id1.erase(id1.find_last_not_of(' ') + 1);
-        id2.erase(0, id2.find_first_not_of(' '));
-        id2.erase(id2.find_last_not_of(' ') + 1);
 
-        std::transform(id1.begin(), id1.end(), id1.begin(), ::tolower);
-        std::transform(id2.begin(), id2.end(), id2.begin(), ::tolower);
-
-        return id1 == id2;
-    }
 };
+

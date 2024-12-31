@@ -21,38 +21,13 @@ Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int id) {
     return nullptr;
 }
 
-Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, const std::string& id) {
+Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int id) {
     for (Medico* medico : medicos) {
-        if (medico->compararID(id)) {
+        if (medico->getID() == id) {
             return medico;
         }
     }
     return nullptr;
-}
-
-void cargarMedicos(std::vector<Medico*>& medicos) {
-    std::ifstream archivo("medicos.txt");
-    if (archivo.is_open()) {
-        std::string linea, nombre, ID, especialidad;
-        bool disponibilidad;
-
-        while (std::getline(archivo, linea)) {
-            if (linea.find("Nombre: ") != std::string::npos) {
-                nombre = linea.substr(8); // Extraer el nombre
-            } else if (linea.find("ID: ") != std::string::npos) {
-                ID = linea.substr(4); // Extraer el ID
-            } else if (linea.find("Especialidad: ") != std::string::npos) {
-                especialidad = linea.substr(13); // Extraer la especialidad
-            } else if (linea.find("Disponibilidad: ") != std::string::npos) {
-                disponibilidad = (linea.substr(15) == "Si"); // Convertir a booleano
-                // Crear un nuevo objeto Medico y añadirlo al vector
-                medicos.push_back(new Medico(nombre, ID, especialidad, disponibilidad));
-            }
-        }
-        archivo.close();
-    } else {
-        std::cerr << "No se pudo abrir el archivo medicos.txt.\n";
-    }
 }
 
 
@@ -78,23 +53,21 @@ int main() {
     int opcion;
     GestorArchivos gestor;
 
-    gestor.recuperarDatosPacientes(pacientes); 
-    cargarMedicos(medicos);
+    gestor.recuperarDatosPacientes(pacientes);
+    gestor.recuperarDatosMedicos(medicos);
     cargarServicios(servicios);
 
     do {
         std::cout << "\n--- MENU ---\n";
         std::cout << "1. Agregar o editar paciente\n";
-        std::cout << "2. Registrar medico\n";
-        std::cout << "3. (funcion 1)\n";
-        std::cout << "4. Ver medicos registrados\n";
-        std::cout << "5. Asignar cita en una fecha determinada\n";
-        std::cout << "6. Agregar medico a un servicio\n";
-        std::cout << "7. Mostrar medicos por servicio\n";
-        std::cout << "8. Mostrar especialidad de cada medico\n";
-        std::cout << "9. Mostrar medico en un servicio con especialidad\n";
-        std::cout << "10. Pacientes atendidos entre fechas determinadas\n";
-        std::cout << "11. Citas pendientes por medico\n";
+        std::cout << "2. Agregar o editar medico\n";
+        std::cout << "3. Asignar cita en una fecha determinada\n";
+        std::cout << "4. Agregar medico a un servicio\n";
+        std::cout << "5. Mostrar medicos por servicio\n";
+        std::cout << "6. Mostrar especialidad de cada medico\n";
+        std::cout << "7. Mostrar medico en un servicio con especialidad\n";
+        std::cout << "8. Pacientes atendidos entre fechas determinadas\n";
+        std::cout << "9. Citas pendientes por medico\n";
         std::cout << "0. Salir\n";
         std::cout << "Seleccione una opcion: ";
         std::cin >> opcion;
@@ -115,17 +88,20 @@ int main() {
                     std::cin.ignore(); // Limpiar el buffer de entrada
 
                     switch(subopcion) {
+                                        // Ver pacientes
                         case 1: {
                             std::cout << "\n--- Lista de Pacientes ---\n";
                             if (pacientes.empty()) {
                                 std::cout << "No hay pacientes registrados.\n";
-                            } else {
+                            } 
+                            else {
                                 for (const auto& paciente : pacientes) {
                                     paciente->mostrarPaciente();
                                 }
                             }
                             break;
                         }
+                                        // Editar pacientes
                         case 2: {
                             int idPaciente;
                             std::cout << "Ingrese el ID del paciente a editar: ";
@@ -141,12 +117,14 @@ int main() {
                             }
                             break;
                         }
+                                        // Eliminar pacientes
                         case 3: {
                             int idPaciente;
                             std::cout << "Ingrese el ID del paciente a eliminar: ";
                             std:: cin >> idPaciente;
 
-                            std::cout << "Estas seguro de eliminar al paciente con ID " << idPaciente << "? (1 para confirmar, 0 para cancelar): ";
+                            std::cout << "Estas seguro de eliminar al paciente con ID " << idPaciente 
+                            << "? (1 para confirmar, 0 para cancelar): ";
                             int confirmar;
                             std::cin >> confirmar;
                             std::cin.ignore(); // Limpiar el buffer de entrada
@@ -159,15 +137,17 @@ int main() {
                             }
                             break;
                         }
+                                        // Registrar paciente   
                         case 4: {
                             std::string nombre, fechaIngreso;
                             int ID;
                             std::cout << "Nombre del paciente: ";
+                            std::cin.ignore();
                             std::getline(std::cin >> std::ws, nombre);
                             std::cout << "ID del paciente (1234): ";
                             std::cin >> ID;
-
-                            std::cout << "Ingrese la fecha de ingreso (dd-MM-AAAA): ";
+                            std::cout << "Ingrese la fecha de ingreso (dd-MM-AAAA): ";  
+                            std::cin.ignore();
                             std::getline(std::cin, fechaIngreso);
 
                             Paciente* nuevoPaciente = new Paciente(nombre, ID, fechaIngreso);
@@ -185,59 +165,109 @@ int main() {
                 } while (subopcion != 0);
                 break;
             }
-                                // Registrar medico
+                            // Agregar o editar medico
             case 2: {
-                std::string nombre, ID, especialidad;
-                bool disponibilidad;
-                std::cout << "Nombre del medico: ";
-                std::getline(std::cin >> std::ws, nombre);
-                std::cout << "ID del medico (1234): ";
-                std::getline(std::cin, ID);
-                std::cout << "Especialidad del medico: ";
-                std::getline(std::cin, especialidad);
-                std::cout << "Medico disponible (1 para si, 0 para no): ";
-                std::cin >> disponibilidad;
-                Medico* nuevoMedico = new Medico(nombre, ID, especialidad, disponibilidad);
-                nuevoMedico->registrarMedico();
-                medicos.push_back(nuevoMedico);
-                break;
-            }
-                            // Ver pacientes registrados
-            case 3: {
-                std::ifstream archivo("pacientes.txt");
-                if (archivo.is_open()) {
-                    std::cout << "\nLista de pacientes registrados:\n";
-                    std::string linea;
-                    while (std::getline(archivo, linea)) {
-                        std::cout << linea << "\n";
+                int subopcion;
+                do {
+                    std::cout << "\n--- MENU MEDICOS ---\n";
+                    std::cout << "1. Ver medicos\n";
+                    std::cout << "2. Editar medico\n";
+                    std::cout << "3. Eliminar medico\n";
+                    std::cout << "4. Registrar medico\n";
+                    std::cout << "0. Volver al menu principal\n";
+                    std::cout << "Seleccione una opcion: ";
+                    std::cin >> subopcion;
+                    std::cin.ignore();
+
+                    switch(subopcion) {
+                                    // ver medicos
+                        case 1: {
+                            std::cout << "\n--- Lista de Medicos ---\n";
+                            if (medicos.empty()) {
+                                std::cout << "No hay medicos en el sistema.\n";
+                            } 
+                            else {
+                                for (const auto& medico : medicos) {
+                                    medico->mostrarMedico();
+                                }
+                            }
+                            break;
+                        }
+                                    // Editar medicos
+                        case 2: {
+                            int idMedico;
+                            std::cout << "Ingrese el ID del medico a editar: ";
+                            std:: cin >> idMedico;
+
+                            auto it = std::find_if(medicos.begin(), medicos.end(),
+                                [&idMedico](Medico* m) { return m->getID() == idMedico; });
+
+                            if (it != medicos.end()) {
+                                (*it)->modificarMedico();
+                            } else {
+                                std::cout << "Medico no encontrado.\n";
+                            }
+                            break;
+                        }
+                                    // Eliminar medico
+                        case 3: {
+                            int idMedico;
+                            std::cout << "Ingrese el ID del medico a eliminar: ";
+                            std:: cin >> idMedico;
+
+                            std::cout << "Estas seguro de eliminar al medico con ID " << idMedico 
+                            << "? (1 para confirmar, 0 para cancelar): ";
+                            int confirmar;
+                            std::cin >> confirmar;
+                            std::cin.ignore(); // Limpiar el buffer de entrada
+
+                            if (confirmar == 1) {
+                                Medico::eliminarMedico(medicos, idMedico);
+                                std::cout << "Medico eliminado correctamente.\n";
+                            } else {
+                                std::cout << "Eliminacion cancelada.\n";
+                            }
+                            break;
+                        }
+                                    // Registrar medico
+                        case 4: { // Registrar médico
+                            std::string nombre, especialidad;
+                            int ID;
+                            bool disponibilidad;
+                            std::cout << "Nombre del medico: ";
+                            std::getline(std::cin, nombre);
+                            std::cout << "ID del medico (1234): ";
+                            while (!(std::cin >> ID)) {
+                                std::cout << "ID invalido. Intenta de nuevo: ";
+                                std::cin.clear();
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            }
+                            std::cin.ignore();
+                            std::cout << "Especialidad del medico: ";
+                            std::getline(std::cin, especialidad);
+                            std::cout << "Medico disponible? (1 para si, 0 para no): ";
+                            while (!(std::cin >> disponibilidad)) {
+                                std::cout << "Entrada invalida. Intenta de nuevo (1 para si, 0 para no): ";
+                                std::cin.clear();
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            }
+
+                            Medico* nuevoMedico = new Medico(nombre, ID, especialidad, disponibilidad);
+                            nuevoMedico->registrarMedico();
+                            medicos.push_back(nuevoMedico);
+
+                            std::cout << "Medico registrado correctamente.\n";
+                            break;
+                        }
                     }
-                    archivo.close();
-                } else {
-                    std::cerr << "Error al abrir el archivo de pacientes.\n";
-                }
-                break;
-            }
-                            // Ver medicos registrados
-            case 4: {
-                std::ifstream archivo("medicos.txt");
-                if (archivo.is_open()) {
-                    std::cout << "\nLista de medicos registrados:\n";
-                    std::string linea;
-                    while (std::getline(archivo, linea)) {
-                        std::cout << linea << "\n";
-                    }
-                    archivo.close();
-                } else {
-                    std::cerr << "Error al abrir el archivo de medicos.\n";
-                }
-                break;
+                } while (subopcion != 0);
             }
                             // Asignar cita en una fecha determinada
-            case 5: {
+            case 3: {
                 std::string fecha;
                 int urgencia;
                 int  pacienteID;
-                std::string medicoID;
+                int medicoID;
                 std::cout << "Fecha de la cita: ";
                 std::getline(std::cin >> std::ws, fecha);
 
@@ -252,9 +282,9 @@ int main() {
                 std::cout << "ID del paciente: ";
                 std::cin >> pacienteID;
                 std::cout << "ID del medico: ";
-                std::getline(std::cin >> std::ws, medicoID);
-                std::cout << "Pacientes cargados:\n";
+                std::cin >> medicoID;
 
+                std::cout << "Pacientes cargados:\n";
                 for (Paciente* p : pacientes) {
                     std::cout << "ID: " << p->getID() << "\n";
                 }
@@ -282,18 +312,19 @@ int main() {
                 break;
             }
                             // Agregar medico a un servicio
-            case 6: {
-                std::string servicioNombre, medicoID;
+            case 4: {
+                std::string servicioNombre;
+                int medicoID;
                 std::cout << "Nombre del servicio: ";
                 std::getline(std::cin >> std::ws, servicioNombre);
                 std::cout << "ID del medico: ";
-                std::getline(std::cin >> std::ws, medicoID);
+                std::cin >> medicoID;
 
                 std::cout << "Buscando medico con ID: [" << medicoID << "]\n";
                 // Buscar medico por ID
                 Medico* medico = nullptr;
                 for (auto& m : medicos) {
-                    if (m->getID() == medicoID) {
+                    if (medico->getID() == medicoID) {
                         medico = m;
                         break;
                     }
@@ -324,13 +355,13 @@ int main() {
                 }
                 break;
             }
-                                    // Mostrar medicos por servicio 
-            case 7: {
+                            // Mostrar medicos por servicio 
+            case 5: {
                 std::string servicioNombre;
                 std::cout << "Nombre del servicio: ";
                 std::getline(std::cin >> std::ws, servicioNombre);
 
-                // Convertir a minus para comparacion
+                // Convertir a minus para comparación
                 std::transform(servicioNombre.begin(), servicioNombre.end(), servicioNombre.begin(), ::tolower);
 
                 std::ifstream archivo("medicos_por_servicio.txt");
@@ -339,7 +370,8 @@ int main() {
                     break;
                 }
 
-                std::string linea, servicioActual, medicoActual, idActual;
+                std::string linea, servicioActual, medicoActual;
+                int idActual;
                 bool servicioEncontrado = false;
                 std::set<std::string> medicosUnicos; // Para evitar duplicados
 
@@ -350,7 +382,7 @@ int main() {
                     } else if (linea.rfind("Medico: ", 0) == 0) {  // Línea de médico
                         medicoActual = linea.substr(8);  // Extraer el nombre del médico
                     } else if (linea.rfind("ID: ", 0) == 0) {  // Línea de ID
-                        idActual = linea.substr(4);  // Extraer el ID
+                        idActual = std::stoi(linea.substr(4));  // Extraer el ID
 
                         // Verificar si ya tenemos un servicio valido
                         if (!servicioActual.empty() && servicioActual == servicioNombre) {
@@ -360,8 +392,9 @@ int main() {
                             }
 
                             // Validar que tanto el medico como el ID esten completos
-                            if (!medicoActual.empty() && !idActual.empty()) {
-                                std::string claveMedico = medicoActual + " (ID: " + idActual + ")";
+                            if (!medicoActual.empty() && idActual > 0) {
+                                std::string idActualStr = std::to_string(idActual);
+                                std::string claveMedico = medicoActual + " (ID: " + idActualStr + ")";
                                 if (medicosUnicos.find(claveMedico) == medicosUnicos.end()) {
                                     medicosUnicos.insert(claveMedico);
                                     std::cout << "- " << claveMedico << "\n";
@@ -370,7 +403,6 @@ int main() {
                         }
                         // Reiniciar las variables de médico e ID para evitar arrastrar datos incorrectos
                         medicoActual.clear();
-                        idActual.clear();
                     }
                 }
                 if (!servicioEncontrado) {
@@ -379,9 +411,8 @@ int main() {
                 archivo.close();
                 break;
             }
-
                             // Mostrar especialidad de cada medico
-            case 8: {
+            case 6: {
                 std::cout << "Especialidad de cada medico:\n";
                 for (auto& medico : medicos) {
                     std::cout << "Medico: " << medico->getNombre() << " - Especialidad: " << medico->getEspecialidad() << "\n";
@@ -389,7 +420,7 @@ int main() {
                 break;
             }
                             // Mostrar medico en un servicio con especialidad
-            case 9: {
+            case 7: {
                 std::string servicioNombre, especialidad;
                 std::cout << "Nombre del servicio: ";
                 std::getline(std::cin, servicioNombre);
@@ -405,7 +436,7 @@ int main() {
                 break;
             }
                             // Pacientes atendidos entre fechas determinadas
-            case 10: {
+            case 8: {
                 std::string fechaInicio, fechaFin;
                 std::cout << "Fecha inicio (yyyy-mm-dd): ";
                 std::getline(std::cin, fechaInicio);
@@ -416,10 +447,10 @@ int main() {
                 break;
             }
                             // Citas pendientes por medico
-            case 11: {
-                std::string medicoID;
+            case 9: {
+                int medicoID;
                 std::cout << "ID del medico: ";
-                std::getline(std::cin, medicoID);
+                std::cin >> medicoID;
                 Reporte reporte;
                 reporte.listarCitasPendientes(citas, "medico");
                 break;
@@ -428,18 +459,21 @@ int main() {
                 std::cout << "Saliendo del programa...\n";
                 break;
             default:
-                std::cout << "Opción no valida. Intenta de nuevo.\n";
+                std::cout << "Opcion no valida. Intenta de nuevo.\n";
                 break;
         }
     } while (opcion != 0);
 
     // Guardar pacientes en archivos
     gestor.guardarDatosPacientes(pacientes);
-
+    gestor.guardarDatosMedicos(medicos);
     // Liberar memoria
     for (Paciente* p : pacientes) {
         delete p;
     }
+    for (Medico* m : medicos) {
+    delete m;
+}
 
     return 0;
 }

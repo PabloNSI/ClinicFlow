@@ -65,6 +65,7 @@ public:
     // Método para editar el paciente
     void editarPaciente() {
         std::cout << "Ingrese el nuevo nombre del paciente: ";
+        std::cin.ignore();
         std::getline(std::cin, nombre);
         std::cout << "Ingrese el nuevo ID del paciente (4 digitos): ";
         std:: cin >> ID;
@@ -73,6 +74,7 @@ public:
         bool fechaValida = false;
         while (!fechaValida) {
             std::cout << "Ingrese la nueva fecha de ingreso (dd-MM-AAAA): ";
+            std::cin.ignore();
             std::getline(std::cin, nuevaFecha);
 
             if (esFechaValida(nuevaFecha)) {

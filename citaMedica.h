@@ -41,14 +41,14 @@ public:
 };
 
 Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int pacienteID);
-Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, const std::string& medicoID);
+Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int medicoID);
 
 // Menú para registrar la cita
 void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medicos, std::vector<CitaMedica*>& citas) {
     std::string fecha;
     int urgencia;
     int pacienteID;
-    std::string  medicoID;
+    int medicoID;
     // Solicitar fecha
     std::cout << "Fecha de la cita: ";
     std::getline(std::cin >> std::ws, fecha);
@@ -64,7 +64,7 @@ void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medi
     std::cout << "ID del paciente: ";
     std::cin >>  pacienteID;
     std::cout << "ID del médico: ";
-    std::getline(std::cin >> std::ws, medicoID);
+    std::cin >> medicoID;
     // Buscar paciente y médico por ID
     Paciente* paciente = buscarPacientePorID(pacientes, pacienteID);
     Medico* medico = buscarMedicoPorID(medicos, medicoID);
