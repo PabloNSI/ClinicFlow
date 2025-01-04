@@ -378,7 +378,7 @@ int main() {
             default:
                 std::cout << "Opcion no valida. Intenta de nuevo.\n";
                 break;
-        }
+         }
     } while (opcion != 0);
 
     // Guardar pacientes en archivos

@@ -153,9 +153,16 @@ public:
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         std::cin.ignore();
-        std::cout << "Fecha de ingreso (dd-MM-AAAA): ";
-        std::getline(std::cin, fechaIngreso);
-
+        bool fechaValida = false;
+            while (!fechaValida) {
+                std::cout << "Fecha de ingreso (dd-MM-AAAA): ";
+                std::getline(std::cin, fechaIngreso);
+                if (esFechaValida(fechaIngreso)) {
+                    fechaValida = true;
+                } else {
+                    std::cout << "Error: La fecha debe tener el formato dd-MM-AAAA." << std::endl;
+                }
+            }
         std::cout << "Paciente registrado correctamente: " << nombre 
                 << " (ID: " << ID << ")" << std::endl;
     }

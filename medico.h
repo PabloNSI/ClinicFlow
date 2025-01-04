@@ -30,6 +30,24 @@ public:
     void setEspecialidad(const std::string& especialidad){ this->especialidad = especialidad; }
     void setDisponibilidad(const bool& disponibilidad){ this->disponibilidad = disponibilidad; }
 
+    bool esServicioValido(const std::string& servicio) {
+        std::ifstream archivo("servicios.txt");
+        if (!archivo.is_open()) {
+            std::cerr << "Error: No se pudo abrir el archivo servicios.txt" << std::endl;
+            return false;
+    }
+
+    std::string linea;
+    while (std::getline(archivo, linea)) {
+        // Comparar ignorando mayusculas y minusculas
+        if (std::equal(servicio.begin(), servicio.end(), linea.begin(), linea.end(),
+                       [](char a, char b) { return std::tolower(a) == std::tolower(b); })) {
+            return true;
+        }
+    }
+    return false;
+    }
+
     void mostrarMedico() const {
         // Como el dato tipo int omite los ceros a la izq, se usa setw y setfill para mostrarlos
         std::cout << "Dr. " << nombre << ", ID: " << std::setw(4) << std::setfill('0') << ID 
@@ -48,8 +66,17 @@ public:
         }
         std::cin.ignore();
 
-        std::cout << "Especialidad del medico: ";
-        std::getline(std::cin, especialidad);
+        bool servicioValido = false;
+        while (!servicioValido) {
+            std::cout << "Servicio del medico: ";
+            std::getline(std::cin, especialidad);
+
+            if (esServicioValido(especialidad)) {
+                servicioValido = true;
+            } else {
+                std::cout << "Error: El servicio ingresado no existe. Intenta de nuevo." << std::endl;
+            }
+        }
 
         std::cout << "Medico disponible? (1 para si, 0 para no): ";
         while (!(std::cin >> disponibilidad)) {
@@ -85,9 +112,19 @@ public:
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
-            std::cout << "Ingrese la nueva especialidad del medico: ";
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::getline(std::cin, medico->especialidad);
+
+            bool servicioValido = false;
+                while (!servicioValido) {
+                    std::cout << "Ingrese la nueva especialidad del medico: ";
+                    std::getline(std::cin, medico->especialidad);
+
+                    if (esServicioValido(medico->especialidad)) {
+                        servicioValido = true;
+                    } else {
+                        std::cout << "Error: El servicio ingresado no existe. Intenta de nuevo." << std::endl;
+                    }
+                }
             std::cout << "Esta disponible el medico? (1 = Si / 0 = No): ";
             while (!(std::cin >> medico->disponibilidad)) {
                 std::cout << "Entrada invalida. Intenta de nuevo (1 = Si / 0 = No): ";
