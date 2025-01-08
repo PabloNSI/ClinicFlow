@@ -1,7 +1,7 @@
-C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/prueba.dir
-C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/edit_cache.dir
-C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/rebuild_cache.dir
-C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/list_install_components.dir
-C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/install.dir
-C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/install/local.dir
-C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/install/strip.dir
+C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/prueba.dir
+C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/edit_cache.dir
+C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/rebuild_cache.dir
+C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/list_install_components.dir
+C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/install.dir
+C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/install/local.dir
+C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/install/strip.dir

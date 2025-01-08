@@ -1,8 +1,8 @@
 [
 {
-  "directory": "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -pendantic -Wall -Wextra -std=gnu++17 -o CMakeFiles\\prueba.dir\\main.cpp.obj -c \"C:\\Users\\jaime\\Desktop\\MSMK\\2 - U20\\AB_code\\main.cpp\"",
-  "file": "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/main.cpp",
+  "directory": "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -pedantic -Wall -Wextra -std=gnu++17 -o CMakeFiles\\prueba.dir\\main.cpp.obj -c \"C:\\Users\\pablo\\OneDrive\\Escritorio\\MSMK\\2 - U20\\AB_code\\main.cpp\"",
+  "file": "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/main.cpp",
   "output": "CMakeFiles/prueba.dir/main.cpp.obj"
 }
 ]

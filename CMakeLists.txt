@@ -13,8 +13,8 @@ servicio.h
 )
 
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS_DEBUG "-pendantic -Wall -Wextra -std=gnu++17")
-set(CMAKE_CXX_FLAGS_RELEASE "-03 -std=gnu++17")
+set(CMAKE_CXX_FLAGS_DEBUG "-pedantic -Wall -Wextra -std=gnu++17")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -std=gnu++17")
 
 add_executable(prueba ${lista_archivos})
 

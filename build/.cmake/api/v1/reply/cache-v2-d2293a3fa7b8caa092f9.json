@@ -43,7 +43,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "Debug"
+			"value" : "Release"
 		},
 		{
 			"name" : "CMAKE_CACHEFILE_DIR",
@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build"
+			"value" : "c:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -91,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "0"
+			"value" : "1"
 		},
 		{
 			"name" : "CMAKE_COLOR_MAKEFILE",
@@ -587,7 +587,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -659,7 +659,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code"
+			"value" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1295,7 +1295,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build"
+			"value" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build"
 		},
 		{
 			"name" : "CMake_IS_TOP_LEVEL",
@@ -1319,7 +1319,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code"
+			"value" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code"
 		},
 		{
 			"name" : "_CMAKE_CXX_LINKER_PUSHPOP_STATE_SUPPORTED",

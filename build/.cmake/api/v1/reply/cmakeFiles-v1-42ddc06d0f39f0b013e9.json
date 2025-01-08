@@ -6,7 +6,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "build/CMakeFiles/3.31.0/CMakeSystem.cmake"
+			"path" : "build/CMakeFiles/3.31.1/CMakeSystem.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -20,11 +20,11 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "build/CMakeFiles/3.31.0/CMakeCCompiler.cmake"
+			"path" : "build/CMakeFiles/3.31.1/CMakeCCompiler.cmake"
 		},
 		{
 			"isGenerated" : true,
-			"path" : "build/CMakeFiles/3.31.0/CMakeCXXCompiler.cmake"
+			"path" : "build/CMakeFiles/3.31.1/CMakeCXXCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -88,7 +88,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "build/CMakeFiles/3.31.0/CMakeRCCompiler.cmake"
+			"path" : "build/CMakeFiles/3.31.1/CMakeRCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -219,8 +219,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build",
-		"source" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code"
+		"build" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build",
+		"source" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code"
 	},
 	"version" : 
 	{

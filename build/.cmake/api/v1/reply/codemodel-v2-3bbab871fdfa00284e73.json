@@ -40,7 +40,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "prueba::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-prueba-Debug-2f15c86fa1782f569fab.json",
+					"jsonFile" : "target-prueba-Debug-75f8fbad0f7b378b9416.json",
 					"name" : "prueba",
 					"projectIndex" : 0
 				}
@@ -50,8 +50,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code/build",
-		"source" : "C:/Users/jaime/Desktop/MSMK/2 - U20/AB_code"
+		"build" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build",
+		"source" : "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code"
 	},
 	"version" : 
 	{
