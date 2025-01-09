@@ -30,7 +30,6 @@ Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int id) {
     return nullptr;
 }
 
-
 void cargarServicios(std::vector<Servicio*>& servicios) {
     std::ifstream archivoServicios("servicios.txt");
     if (archivoServicios.is_open()) {
@@ -55,13 +54,14 @@ int main() {
 
     gestor.recuperarDatosPacientes(pacientes);
     gestor.recuperarDatosMedicos(medicos);
+    gestor.recuperarDatosCitas(citas, pacientes, medicos);
     cargarServicios(servicios);
 
     do {
         std::cout << "\n--- MENU ---\n";
         std::cout << "1. Agregar o editar paciente\n";
         std::cout << "2. Agregar o editar medico\n";
-        std::cout << "3. Asignar cita en una fecha determinada\n";
+        std::cout << "3. Agregar o editar citas medicas\n";
         std::cout << "4. Agregar medico a un servicio\n";
         std::cout << "5. Mostrar medicos por servicio\n";
         std::cout << "6. Mostrar especialidad de cada medico\n";
@@ -179,53 +179,51 @@ int main() {
                 } while (subopcion != 0);
                 break;
             }
-                            // Asignar cita en una fecha determinada
-            case 3: {
-                std::string fecha;
-                int urgencia;
-                int  pacienteID;
-                int medicoID;
-                std::cout << "Fecha de la cita: ";
-                std::getline(std::cin >> std::ws, fecha);
+                            // Agregar o editar  citas medicas
+            case 3:{
+                int subopcion;
+                do {
+                    std::cout << "\n--- MENU CITAS MEDICAS ---\n";
+                    std::cout << "1. Ver citas\n";
+                    std::cout << "2. Editar cita\n";
+                    std::cout << "3. Eliminar cita\n";
+                    std::cout << "4. Registrar cita\n";
+                    std::cout << "0. Volver al menu principal\n";
+                    std::cout << "Seleccione una opcion: ";
+                    std::cin >> subopcion;
+                    std::cin.ignore();
 
-                std::cout << "Urgencia (1-5): ";
-                while (!(std::cin >> urgencia) || urgencia < 1 || urgencia > 5) {
-                    std::cout << "Por favor, ingrese un valor valido para la urgencia (1-5): ";
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                }
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-                std::cout << "ID del paciente: ";
-                std::cin >> pacienteID;
-                std::cout << "ID del medico: ";
-                std::cin >> medicoID;
-
-                std::cout << "Pacientes cargados:\n";
-                for (Paciente* p : pacientes) {
-                    std::cout << "ID: " << p->getID() << "\n";
-                }
-
-                std::cout << "Medicos cargados:\n";
-                for (Medico* m : medicos) {
-                    std::cout << "ID: " << m->getID() << "\n";
-                }
-
-                Paciente* paciente = buscarPacientePorID(pacientes, pacienteID);
-                Medico* medico = buscarMedicoPorID(medicos, medicoID);
-
-                if (paciente && medico) {
-                    CitaMedica* nuevaCita = new CitaMedica(fecha, urgencia, paciente, medico);
-                    nuevaCita->asignarCita();
-                    citas.push_back(nuevaCita);
-                    paciente->añadirCita(nuevaCita);
-                    medico->añadirCita(nuevaCita);
-                    std::cout << "Cita asignada correctamente.\n";
-                } else {
-                    std::cout << "Paciente o medico no encontrado.\n";
-                    std::cout << "Pacientes registrados: " << pacientes.size() << "\n";
-                    std::cout << "Medicos registrados: " << medicos.size() << "\n";
-                }
+                    switch(subopcion) {
+                                    // ver cita
+                        case 1: {
+                            std::cout << "\n--- Lista de Citas ---\n";
+                            if (citas.empty()) {
+                                std::cout << "No hay citas registradas.\n";
+                            } else {
+                                for (const auto& cita : citas) {
+                                    cita->mostrarCita();
+                                }
+                            }
+                            break;
+                        }
+                                    // Editar cita
+                        case 2: {
+                            CitaMedica::modificarCita(pacientes, medicos, citas);
+                            break;
+                        }
+                                    // Eliminar cita
+                        case 3: {
+                            CitaMedica::eliminarCita(citas);
+                            break;
+                        }
+                                    // Registrar cita
+                        case 4: {
+                            CitaMedica cita("", 0, nullptr, nullptr);
+                            cita.registrarCita(pacientes, medicos, citas);
+                            break;
+                        }
+                    }
+                } while (subopcion != 0);
                 break;
             }
                             // Agregar medico a un servicio
@@ -381,16 +379,26 @@ int main() {
          }
     } while (opcion != 0);
 
-    // Guardar pacientes en archivos
+    // Guardar datos de pacientes y medicos en sus archivos
     gestor.guardarDatosPacientes(pacientes);
     gestor.guardarDatosMedicos(medicos);
+    gestor.guardarDatosCitas(citas);
+
+        // Guardar datos de pacientes, medicos y citas en sus archivos
+    gestor.guardarDatosPacientes(pacientes);
+    gestor.guardarDatosMedicos(medicos);
+    gestor.guardarDatosCitas(citas);
+
     // Liberar memoria
     for (Paciente* p : pacientes) {
         delete p;
     }
     for (Medico* m : medicos) {
     delete m;
-}
+    }
+    for (CitaMedica* c : citas) {
+        delete c;
+    }
 
     return 0;
 }

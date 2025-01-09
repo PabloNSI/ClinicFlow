@@ -9,8 +9,12 @@
 #include "medico.h"
 #include "servicio.h"
 
+Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int id);
+Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int id);
+
 class GestorArchivos {
 public:
+// Función para guardar los datos de los pacientes
 void guardarDatosPacientes(const std::vector<Paciente*>& pacientes) {
         std::ofstream archivo("pacientes.txt");
         if (!archivo.is_open()) {
@@ -49,7 +53,7 @@ void recuperarDatosPacientes(std::vector<Paciente*>& pacientes) {
 
     archivo.close();
 }
-
+    // Función para guardar los datos de los medicos
 void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
     std::ofstream archivo("medicos.txt");
     if (!archivo.is_open()) {
@@ -68,7 +72,7 @@ void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
 
     archivo.close();
 }
-
+    // Función para recuperar los datos de los medicos
 void recuperarDatosMedicos(std::vector<Medico*>& medicos) {
         std::ifstream archivo("medicos.txt");
         if (!archivo.is_open()) {
@@ -96,7 +100,70 @@ void recuperarDatosMedicos(std::vector<Medico*>& medicos) {
 
         archivo.close();
     }
+    // Función para guardar los datos de las citas
+void guardarDatosCitas(const std::vector<CitaMedica*>& citas) {
+    std::ofstream archivo("citas.txt");
+    if (!archivo.is_open()) {
+        std::cerr << "No se pudo abrir el archivo citas.txt para escribir.\n";
+        return;
+    }
 
+    for (const CitaMedica* cita : citas) {
+        archivo << "Fecha: " << cita->getFecha() << "\n";
+        archivo << "Paciente: " << cita->getPaciente()->getNombre() 
+                << " (ID: " << cita->getPaciente()->getID() << ")\n";
+        archivo << "Medico: " << cita->getMedico()->getNombre() 
+                << " (ID: " << cita->getMedico()->getID() << ")\n";
+        archivo << "Urgencia: " << cita->getUrgencia() << "\n";
+        archivo << "--------------------------------------\n";
+    }
+
+    archivo.close();
+}
+
+    // Funcion para recuperar los datos de las citas
+void recuperarDatosCitas(std::vector<CitaMedica*>& citas, 
+                        const std::vector<Paciente*>& pacientes, 
+                        const std::vector<Medico*>& medicos) {
+    std::ifstream archivo("citas.txt");
+    if (!archivo.is_open()) {
+        std::cerr << "No se pudo abrir el archivo citas.txt para leer.\n";
+        return;
+    }
+
+    std::string linea, fecha;
+    int idPaciente, idMedico, urgencia;
+
+    while (std::getline(archivo, linea)) {
+        if (linea.find("Fecha: ") == 0) {
+            // Leer la fecha
+            fecha = linea.substr(7);
+            // Leer el paciente
+            std::getline(archivo, linea);
+            idPaciente = std::stoi(linea.substr(linea.find("ID: ") + 4, linea.find(")") - linea.find("ID: ") - 4));
+            // Leer el médico
+            std::getline(archivo, linea);
+            idMedico = std::stoi(linea.substr(linea.find("ID: ") + 4, linea.find(")") - linea.find("ID: ") - 4));
+            // Leer la urgencia
+            std::getline(archivo, linea);
+            urgencia = std::stoi(linea.substr(10));
+
+            // Buscar al paciente y al médico por sus ID
+            Paciente* paciente = buscarPacientePorID(pacientes, idPaciente);
+            Medico* medico = buscarMedicoPorID(medicos, idMedico);
+
+            if (paciente != nullptr && medico != nullptr) {
+                // Crear la cita y agregarla al vector
+                citas.push_back(new CitaMedica(fecha, urgencia, paciente, medico));
+            } else {
+                std::cerr << "Error: No se encontró el paciente o médico para la cita con fecha " << fecha << ".\n";
+            }
+        }
+    }
+
+    archivo.close();
+}
+    // Función para guardar los datos de los servicios
 void guardarDatosServicios(const std::vector<Servicio*>& servicios) {
         std::ofstream archivo("servicios.txt");
         if (!archivo.is_open()) {
@@ -110,7 +177,7 @@ void guardarDatosServicios(const std::vector<Servicio*>& servicios) {
 
         archivo.close();
     }
-
+    // Función para recuperar los datos de los servicios
 void recuperarDatosServicios(std::vector<Servicio*>& servicios) {
         std::ifstream archivo("servicios.txt");
         if (!archivo.is_open()) {

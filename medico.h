@@ -166,7 +166,7 @@ public:
                 medicos.erase(it);
                 std::cout << "Medico eliminado correctamente.\n";
             }else {
-                std::cout << "No se encontró un medico con ese ID.\n";
+                std::cout << "No se encontro un medico con ese ID.\n";
             }
         } else {
             std::cout << "Eliminacion cancelada.\n";
