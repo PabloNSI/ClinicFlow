@@ -2,4 +2,9 @@ Fecha: 05-02-2025
 Paciente: Jesus Navas (ID: 1605)
 Medico: Juan Jimenez (ID: 1001)
 Urgencia: 3
-----------------------
+--------------------------------------
+Fecha: 24-01-2025
+Paciente: Mario Ramirez (ID: 1224)
+Medico: Juana Gomez (ID: 1002)
+Urgencia: 4
+--------------------------------------

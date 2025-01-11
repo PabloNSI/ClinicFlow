@@ -1,10 +1,10 @@
 Dr. Juan Jimenez
 ID: 1001
-Especialidad: Cardiologia
+Servicio: Cardiologia
 Disponibilidad: 1
 
 Dr. Juana Gomez
 ID: 1002
-Especialidad: Cardiologia
+Servicio: Foniatria
 Disponibilidad: 1
 

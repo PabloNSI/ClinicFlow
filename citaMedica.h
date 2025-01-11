@@ -73,12 +73,14 @@ public:
     
     // Ver citas
     void mostrarCita() const {
-        std::cout << "Fecha: " << fecha
-                  << ", Urgencia: " << urgencia
-                  << ", Paciente: " << paciente->getNombre()
-                  << " (ID: " << paciente->getID() << ")"
-                  << ", Medico: Dr. " << medico->getNombre()
-                  << " (ID: " << medico->getID() << ")\n";
+        std::cout << "Servicio: " << medico->getServicio() << "\n"
+                  << "Fecha: " << fecha
+                  << "Paciente: " << paciente->getNombre()
+                  << " (ID: " << paciente->getID() << ")" << "\n"
+                  << "Medico: Dr. " << medico->getNombre()
+                  << " (ID: " << medico->getID() << ")\n"
+                  << "Urgencia: " << urgencia << "\n"
+                  << "-----------" << "\n";
     }
     
     // Registrar una cita

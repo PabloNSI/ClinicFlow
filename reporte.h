@@ -24,14 +24,14 @@ public:
     }
 
     void listarCitasPendientes(const std::vector<CitaMedica*>& citas, const std::string& criterio) {
-        std::cout << "Citas pendientes por " << (criterio == "medico" ? "medico" : "especialidad") << ":\n";
+        std::cout << "Citas pendientes por " << (criterio == "medico" ? "medico" : "servicio") << ":\n";
         for (const auto& cita : citas) {
             if (criterio == "medico") {
                 std::cout << "Medico: " << cita->getMedico()->getNombre() 
                 << " - Paciente: " << cita->getPaciente()->getNombre() << " - Fecha: " 
                 << cita->getFecha() << "\n";
-            } else if (criterio == "especialidad") {
-                std::cout << "Especialidad: " << cita->getMedico()->getEspecialidad() 
+            } else if (criterio == "servicio") {
+                std::cout << "Servicio: " << cita->getMedico()->getServicio() 
                 << " - Paciente: " << cita->getPaciente()->getNombre() << " - Fecha: " 
                 << cita->getFecha() << "\n";
             }

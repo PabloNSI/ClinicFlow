@@ -7,7 +7,6 @@
 #include <iomanip>
 #include "paciente.h"
 #include "medico.h"
-#include "servicio.h"
 
 Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int id);
 Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int id);
@@ -65,7 +64,7 @@ void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
         archivo << "Dr. " << medico->getNombre() << "\n";
             // Como el dato tipo int omite los ceros a la izq, se usa setw y setfill para mostrarlos
             archivo << std::setw(4) << std::setfill('0') << "ID: " << medico->getID() << "\n";
-             archivo << "Especialidad: " << medico->getEspecialidad() << "\n";
+             archivo << "Servicio: " << medico->getServicio() << "\n";
              archivo << "Disponibilidad: " << medico->getDisponibilidad()<< "\n";
              archivo << "\n";
     }
@@ -80,20 +79,20 @@ void recuperarDatosMedicos(std::vector<Medico*>& medicos) {
             return;
         }
 
-        std::string linea, nombre, especialidad;
+        std::string linea, nombre, servicio;
         int ID;
         while (std::getline(archivo, linea)){
             if (linea.find("Dr. ") != std::string::npos) {
                 nombre = linea.substr(4);
             } else if (linea.find("ID: ") != std::string::npos) {
                 ID = std::stoi(linea.substr(4));
-            } else if (linea.find("Especialidad: ") != std::string::npos){
-               especialidad = linea.substr(14);
+            } else if (linea.find("Servicio: ") != std::string::npos){
+               servicio = linea.substr(10);
             } else if (linea.find("Disponibilidad: ") != std::string::npos) {
                 std::string valor_disponibilidad = linea.substr(16);
                 int disponibilidad_int = std::stoi(valor_disponibilidad);
                 bool disponibilidad = (disponibilidad_int != 0);
-                medicos.push_back(new Medico(nombre, ID, especialidad, disponibilidad));
+                medicos.push_back(new Medico(nombre, ID, servicio, disponibilidad));
             }
 
         }
@@ -163,33 +162,4 @@ void recuperarDatosCitas(std::vector<CitaMedica*>& citas,
 
     archivo.close();
 }
-    // Función para guardar los datos de los servicios
-void guardarDatosServicios(const std::vector<Servicio*>& servicios) {
-        std::ofstream archivo("servicios.txt");
-        if (!archivo.is_open()) {
-            std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
-            return;
-        }
-
-        for (auto servicio : servicios) {
-            archivo << servicio->getNombreServicio() << "\n";
-        }
-
-        archivo.close();
-    }
-    // Función para recuperar los datos de los servicios
-void recuperarDatosServicios(std::vector<Servicio*>& servicios) {
-        std::ifstream archivo("servicios.txt");
-        if (!archivo.is_open()) {
-            std::cerr << "No se pudo abrir el archivo para leer." << std::endl;
-            return;
-        }
-
-        std::string nombreServicio;
-        while (std::getline(archivo, nombreServicio)) {
-            servicios.push_back(new Servicio(nombreServicio));
-        }
-
-        archivo.close();
-    }
 };

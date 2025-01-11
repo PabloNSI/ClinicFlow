@@ -13,21 +13,21 @@ class Medico {
 private:
     std::string nombre;
     int ID;
-    std::string especialidad;
+    std::string servicio;
     bool disponibilidad;
     std::vector<CitaMedica*> citas;
 
 public:
     // Constructor por defecto
     Medico() 
-        : nombre(""), ID(0), especialidad(""), disponibilidad(false) {}
+        : nombre(""), ID(0), servicio(""), disponibilidad(false) {}
     // Constructor
-    Medico(std::string& nombre, int ID, const std::string& especialidad, bool disponibilidad)
-        : nombre(nombre), ID(ID), especialidad(especialidad), disponibilidad(disponibilidad) {}
+    Medico(std::string& nombre, int ID, const std::string& servicio, bool disponibilidad)
+        : nombre(nombre), ID(ID), servicio(servicio), disponibilidad(disponibilidad) {}
 
     void setNombre(const std::string& nombre) { this->nombre = nombre; }
     void setID(const int& ID) { this->ID = ID; }
-    void setEspecialidad(const std::string& especialidad){ this->especialidad = especialidad; }
+    void setServicio(const std::string& servicio){ this->servicio = servicio; }
     void setDisponibilidad(const bool& disponibilidad){ this->disponibilidad = disponibilidad; }
 
     bool esServicioValido(const std::string& servicio) {
@@ -50,8 +50,10 @@ public:
 
     void mostrarMedico() const {
         // Como el dato tipo int omite los ceros a la izq, se usa setw y setfill para mostrarlos
-        std::cout << "Dr. " << nombre << ", ID: " << std::setw(4) << std::setfill('0') << ID 
-        << ", Especialidad: " << especialidad << ", Disponibilidad: " << disponibilidad <<std::endl;
+        std::cout << "Dr. " << nombre << ", ID: " << std::setw(4) << std::setfill('0') << ID << "\n"
+        << "Servicio: " << servicio << "\n"
+        << "Disponibilidad: " << disponibilidad << "\n"
+        << "------------------" << "\n";
     }
 
     void registrarMedico() {
@@ -69,9 +71,9 @@ public:
         bool servicioValido = false;
         while (!servicioValido) {
             std::cout << "Servicio del medico: ";
-            std::getline(std::cin, especialidad);
+            std::getline(std::cin, servicio);
 
-            if (esServicioValido(especialidad)) {
+            if (esServicioValido(servicio)) {
                 servicioValido = true;
             } else {
                 std::cout << "Error: El servicio ingresado no existe. Intenta de nuevo." << std::endl;
@@ -116,10 +118,10 @@ public:
 
             bool servicioValido = false;
                 while (!servicioValido) {
-                    std::cout << "Ingrese la nueva especialidad del medico: ";
-                    std::getline(std::cin, medico->especialidad);
+                    std::cout << "Ingrese el nuevo servicio del medico: ";
+                    std::getline(std::cin, medico->servicio);
 
-                    if (esServicioValido(medico->especialidad)) {
+                    if (esServicioValido(medico->servicio)) {
                         servicioValido = true;
                     } else {
                         std::cout << "Error: El servicio ingresado no existe. Intenta de nuevo." << std::endl;
@@ -179,10 +181,10 @@ public:
     // Metodos de consulta (getters)
     std::string getNombre() const { return nombre; }
     int getID() const { return ID; }
-    std::string getEspecialidad() const { return especialidad; }
+    std::string getServicio() const { return servicio; }
     bool getDisponibilidad() const { return disponibilidad; }
     // Metodo estatico para obtener el número de campos requeridos
-    static int camposRequeridos() { return 4; } // Nombre, ID, Especialidad, Disponibilidad
+    static int camposRequeridos() { return 4; } // Nombre, ID, Servicio, Disponibilidad
 
 };
 

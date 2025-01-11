@@ -61,8 +61,11 @@ public:
 
         // Método para mostrar los datos del paciente
     void mostrarPaciente() const {
-        std::cout << "Nombre: " << nombre << ", ID: " << ID << ", Fecha de ingreso: " << fechaIngreso << std::endl;
+        std::cout << "Nombre: " << nombre << ", ID: " << ID << "\n"
+        << "Fecha de ingreso: " << fechaIngreso << "\n"
+        << "----------------------------" << "\n";
     }
+        
         // Método para editar el paciente
     void editarPaciente(std::vector<Paciente*>& pacientes) {
         int idPaciente;
@@ -167,9 +170,4 @@ public:
                 << " (ID: " << ID << ")" << std::endl;
     }
     
-    // Añadir cita médica
-    void añadirCita(CitaMedica* cita) {
-        citas.push_back(cita);
-    }
-
 };
