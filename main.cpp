@@ -125,14 +125,73 @@ int main() {
                     switch(subopcion) {
                                     // ver medicos
                         case 1: {
-                            std::cout << "\n--- Lista de Medicos ---\n\n";
-                            if (medicos.empty()) {
-                                std::cout << "No hay medicos en el sistema.\n";
-                            }else {
-                                for (const auto& medico : medicos) {
-                                    medico->mostrarMedico();
+                            int opcion;
+                            std::string servicio, nombre;
+                            int id;
+                            do {
+                                std::cout << "\n--- MENU VER MEDICOS ---\n";
+                                std::cout << "1. Ver lista completa de medicos\n";
+                                std::cout << "2. Buscar medico por servicio\n";
+                                std::cout << "3. Buscar medico por ID\n";
+                                std::cout << "4. Buscar medico por nombre\n";
+                                std::cout << "0. Salir\n";
+                                std::cout << "Ingrese una opcion: ";
+                                std::cin >> opcion;
+                                std::cin.ignore();
+
+                                switch(opcion) {
+                                    // ver lista completa de medicos
+                                    case 1:{
+                                        // Mostrar lista completa de médicos
+                                        std::cout << "\n--- Lista de Medicos ---\n\n";
+                                        if (medicos.empty()) {
+                                            std::cout << "No hay medicos en el sistema.\n";
+                                        } else {
+                                            for (const auto& medico : medicos) {
+                                                medico->mostrarMedico();
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    // ver medicos por servicio
+                                    case 2:{
+                                        // Buscar medico por servicio
+                                        std::cout << "Ingrese el servicio a buscar: ";
+                                        std::getline(std::cin, servicio);
+                                        Medico::verMedicoPorServicio(medicos, servicio);
+                                        break;
+                                    }
+                                    // ver medicos por ID
+                                    case 3:{
+                                        std::cout << "Ingrese el ID del medico a buscar: ";
+                                        while (!(std::cin >> id)) {
+                                            std::cout << "ID invalido. Intente de nuevo: ";
+                                            std::cin.clear();
+                                            std::cin.ignore();
+                                        }
+                                        std::cin.ignore();
+                                        Medico::verMedicoPorID(medicos, id);
+                                        break;
+                                    }
+                                    // ver medicos por nombre
+                                    case 4:{
+                                        std::cout << "Ingrese el nombre del medico a buscar: ";
+                                        std::getline(std::cin, nombre);
+                                        Medico::verMedicoPorNombre(medicos, nombre);
+                                        break;
+                                    }
+
+                                    case 0:
+                                        std::cout << "Volviendo al menu de medicos...\n";
+                                        break;
+
+                                    default:
+                                        std::cout << "Opcion no valida. Intente de nuevo.\n";
                                 }
-                            }break;
+
+                            } while (opcion != 0);
+
+                            break;
                         }
                                     // Editar medicos
                         case 2: {
@@ -154,6 +213,12 @@ int main() {
                             medicos.push_back(new Medico(nuevoMedico));
                             break;
                         }
+                        
+                        case 0:
+                            std::cout << "Volviendo al menu principal...\n";
+                            break;
+                        default:
+                            std::cout << "Opcion no valida. Intente de nuevo.\n";
                     }
                 } while (subopcion != 0);
                 break;
@@ -200,7 +265,12 @@ int main() {
                             CitaMedica cita("", 0, nullptr, nullptr);
                             cita.registrarCita(pacientes, medicos, citas);
                             break;
-                        }
+                        }                      
+                        case 0:
+                            std::cout << "Volviendo al menu principal...\n";
+                            break;
+                        default:
+                            std::cout << "Opcion no valida. Intente de nuevo.\n";
                     }
                 } while (subopcion != 0);
                 break;

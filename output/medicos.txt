@@ -1,10 +1,115 @@
 Dr. Juan Jimenez
-ID: 1001
+ID: 1101
 Servicio: Cardiologia
 Disponibilidad: 1
-
+-----------------
 Dr. Juana Gomez
-ID: 1002
+ID: 1102
 Servicio: Foniatria
 Disponibilidad: 1
-
+-----------------
+Dr. Ana Martinez
+ID: 1001
+Servicio: Alergologia
+Disponibilidad: 1
+-----------------
+Dr. Carlos Herrera
+ID: 1002
+Servicio: Anestesiologia
+Disponibilidad: 1
+-----------------
+Dr. Mario Suarez
+ID: 1003
+Servicio: Angiologia
+Disponibilidad: 1
+-----------------
+Dr. Sofia Jimenez
+ID: 1004
+Servicio: Cardiologia
+Disponibilidad: 1
+-----------------
+Dr. Paula Vargas
+ID: 1005
+Servicio: Endocrinologia
+Disponibilidad: 1
+-----------------
+Dr. Lucia Ortega
+ID: 1006
+Servicio: Estomatologia
+Disponibilidad: 1
+-----------------
+Dr. Jaime Gomez
+ID: 1007
+Servicio: Foniatria
+Disponibilidad: 1
+-----------------
+Dr. Javier Perez
+ID: 1008
+Servicio: Gastroenterologia
+Disponibilidad: 1
+-----------------
+Dr. Marta Lopez
+ID: 1009
+Servicio: Geriatria
+Disponibilidad: 1
+-----------------
+Dr. Antonio Ramirez
+ID: 1010
+Servicio: Hematologia
+Disponibilidad: 1
+-----------------
+Dr. Rosa Fernandez
+ID: 1011
+Servicio: Hepatologia
+Disponibilidad: 1
+-----------------
+Dr. Luis Morales
+ID: 1012
+Servicio: Infectologia
+Disponibilidad: 1
+-----------------
+Dr. Elena Castillo
+ID: 1013
+Servicio: Inmunologia
+Disponibilidad: 1
+-----------------
+Dr. Diego Salinas
+ID: 1014
+Servicio: Nefrologia
+Disponibilidad: 1
+-----------------
+Dr. Laura Quintana
+ID: 1015
+Servicio: Neumologia
+Disponibilidad: 1
+-----------------
+Dr. Ricardo Mendoza
+ID: 1016
+Servicio: Neurologia
+Disponibilidad: 1
+-----------------
+Dr. Andrea Villanueva
+ID: 1017
+Servicio: Oncologia
+Disponibilidad: 1
+-----------------
+Dr. Felipe Torres
+ID: 1018
+Servicio: Pediatria
+Disponibilidad: 1
+-----------------
+Dr. Ignacio Rojas
+ID: 1019
+Servicio: Psiquiatria
+Disponibilidad: 1
+-----------------
+Dr. Susana Diaz
+ID: 1020
+Servicio: Reumatologia
+Disponibilidad: 1
+-----------------
+Dr. Marcos Hernandez
+ID: 1103
+Servicio: Toxicologia
+Disponibilidad: 1
+-----------------

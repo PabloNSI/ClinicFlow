@@ -73,21 +73,23 @@ public:
         while (!(std::cin >> idPaciente)) {
             std::cout << "Entrada invalida. Intente de nuevo: ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
         std::cin.ignore();
         auto it = std::find_if(pacientes.begin(), pacientes.end(),
             [&idPaciente](Paciente* p) { return p->getID() == idPaciente; });
         if (it != pacientes.end()) {
             Paciente* paciente = *it;
-            std::cout << "Paciente encontrado: " << paciente->nombre << ", ID: " << paciente->ID << ", Fecha de ingreso: " << paciente->fechaIngreso << std::endl;
+            std::cout << "Paciente encontrado: \n";
+            std::cout << "Nombre: " << nombre << ", ID: " << ID << "\n"
+            << "Fecha de ingreso: " << fechaIngreso << "\n";
             std::cout << "Ingrese el nuevo nombre del paciente: ";
             std::getline(std::cin, paciente->nombre);
             std::cout << "Ingrese el nuevo ID del paciente (4 digitos): ";
             while (!(std::cin >> paciente->ID)) {
                 std::cout << "ID invalido. Intente de nuevo: ";
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
             }
             std::cin.ignore();
             std::string nuevaFecha;
@@ -115,7 +117,7 @@ public:
         while (!(std::cin >> idPaciente)) {
             std::cout << "Entrada invalida. Intente de nuevo: ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
         std::cin.ignore();
         std::cout << "Estas seguro de eliminar al paciente con ID " << idPaciente 
@@ -124,7 +126,7 @@ public:
         while (!(std::cin >> confirmar) || (confirmar != 1 && confirmar != 0)) {
             std::cout << "Entrada invalida. Intente de nuevo (1 para confirmar, 0 para cancelar): ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
         std::cin.ignore();
 

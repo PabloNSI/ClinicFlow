@@ -47,7 +47,8 @@ public:
     }
     return false;
     }
-
+        
+        // Método para mostrar todos los medicos
     void mostrarMedico() const {
         // Como el dato tipo int omite los ceros a la izq, se usa setw y setfill para mostrarlos
         std::cout << "Dr. " << nombre << ", ID: " << std::setw(4) << std::setfill('0') << ID << "\n"
@@ -56,6 +57,57 @@ public:
         << "------------------" << "\n";
     }
 
+        // Método para mostrar los medicos por servicio
+    static void verMedicoPorServicio(const std::vector<Medico*>& medicos, const std::string& servicio) {
+        std::cout << "\n--- Medicos en el servicio ---\n";
+        bool encontrado = false;
+
+        for (const auto& medico : medicos) {
+            if (medico->getServicio() == servicio) {
+                medico->mostrarMedico();
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            std::cout << "No se encontraron medicos con el servicio: " << servicio << "\n";
+        }
+    }
+        
+        // Método para mostrar medico por ID
+    static void verMedicoPorID(const std::vector<Medico*>& medicos, int id) {
+        bool encontrado = false;
+
+        for (const auto& medico : medicos) {
+            if (medico->getID() == id) {
+                medico->mostrarMedico();
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            std::cout << "No se encontro un medico con ID: " << id << "\n";
+        }
+    }
+        
+        // Método para mostra  medico por nombre
+    static void verMedicoPorNombre(const std::vector<Medico*>& medicos, const std::string& nombre) {
+        bool encontrado = false;
+
+        for (const auto& medico : medicos) {
+            if (medico->getNombre() == nombre) {
+                medico->mostrarMedico();
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            std::cout << "No se encontraron medicos con el nombre: " << nombre << "\n";
+        }
+    }
+        
+        // Método para agregar un medico
     void registrarMedico() {
         std::cout << "Nombre y apellidos del medico: ";
         std::getline(std::cin, nombre);
@@ -64,7 +116,7 @@ public:
         while (!(std::cin >> ID)) {
             std::cout << "ID invalido. Intenta de nuevo: ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
         std::cin.ignore();
 
@@ -84,20 +136,21 @@ public:
         while (!(std::cin >> disponibilidad)) {
             std::cout << "Entrada invalida. Intenta de nuevo (1 para si, 0 para no): ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
 
         std::cin.ignore();
         std::cout << "Medico registrado correctamente: " << nombre << " (ID: " << ID << ")" << std::endl;
     }
 
+        // Método para modificar un medico
     void modificarMedico(std::vector<Medico*>& medicos) {
         int idMedico;
         std::cout << "Ingrese el ID del medico a editar: ";
         while (!(std::cin >> idMedico)) {
             std::cout << "Entrada invalida. Intente de nuevo: ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
 
         auto it = std::find_if(medicos.begin(), medicos.end(),
@@ -105,16 +158,21 @@ public:
 
         if (it != medicos.end()) {
             Medico* medico = *it;
-            std::cout << "Ingrese el nuevo nombre y apellidos del medico: ";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Medico encontrado: \n";
+            std::cout << "Dr. " << nombre << "\n" 
+            << "ID: " << std::setw(4) << std::setfill('0') << ID << "\n"
+            << "Servicio: " << servicio << "\n"
+            << "Disponibilidad: " << disponibilidad << "\n";
+            std::cout << "Ingrese el nuevo nombre del medico: ";
+            std::cin.ignore();
             std::getline(std::cin, medico->nombre);
             std::cout << "Ingrese el nuevo ID del medico (1234): ";
             while (!(std::cin >> medico->ID)) {
                 std::cout << "ID invalido. Intenta de nuevo: ";
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
             }
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
 
             bool servicioValido = false;
                 while (!servicioValido) {
@@ -131,7 +189,7 @@ public:
             while (!(std::cin >> medico->disponibilidad)) {
                 std::cout << "Entrada invalida. Intenta de nuevo (1 = Si / 0 = No): ";
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore();
             }
 
             std::cout << "Medico modificado correctamente.\n";
@@ -139,14 +197,15 @@ public:
             std::cout << "Medico no encontrado.\n";
         }
     }
-
+        
+        // Método para eliminar un medico
     static void eliminarMedico(std::vector<Medico*>& medicos) {
         int idMedico;
         std::cout << "Ingrese el ID del medico a eliminar: ";
         while (!(std::cin >> idMedico)) { 
             std::cout << "Entrada invalida. Intente de nuevo: ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
         std::cin.ignore();
         std::cout << "Estas seguro de eliminar al medico con ID " << idMedico
@@ -155,7 +214,7 @@ public:
         while (!(std::cin >> confirmar) || (confirmar != 1 && confirmar != 0)) { // Validar entrada
             std::cout << "Entrada invalida. Intente de nuevo (1 para confirmar, 0 para cancelar): ";
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore();
         }
         std::cin.ignore();
         if (confirmar == 1) {

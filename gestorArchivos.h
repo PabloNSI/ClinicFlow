@@ -24,7 +24,8 @@ void guardarDatosPacientes(const std::vector<Paciente*>& pacientes) {
         for (Paciente* paciente : pacientes) {
             archivo << "Nombre: " << paciente->getNombre() << "\n";
             archivo << "ID: " << paciente->getID() << "\n";
-            archivo << "Fecha de ingreso: " << paciente->getFechaIngreso() << "\n\n";
+            archivo << "Fecha de ingreso: " << paciente->getFechaIngreso() << "\n"
+            << "----------------------------" << "\n";
         }
 
         archivo.close();
@@ -66,7 +67,7 @@ void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
             archivo << std::setw(4) << std::setfill('0') << "ID: " << medico->getID() << "\n";
              archivo << "Servicio: " << medico->getServicio() << "\n";
              archivo << "Disponibilidad: " << medico->getDisponibilidad()<< "\n";
-             archivo << "\n";
+             archivo << "-----------------\n";
     }
 
     archivo.close();

@@ -74,11 +74,11 @@ public:
     // Ver citas
     void mostrarCita() const {
         std::cout << "Servicio: " << medico->getServicio() << "\n"
-                  << "Fecha: " << fecha
+                  << "Fecha: " << fecha << "\n"
                   << "Paciente: " << paciente->getNombre()
                   << " (ID: " << paciente->getID() << ")" << "\n"
                   << "Medico: Dr. " << medico->getNombre()
-                  << " (ID: " << medico->getID() << ")\n"
+                  << "(ID: " << medico->getID() << ")\n"
                   << "Urgencia: " << urgencia << "\n"
                   << "-----------" << "\n";
     }
@@ -175,7 +175,14 @@ public:
                     std::cout << "Paciente no encontrado. Intenta de nuevo: ";
                 }
             }
-
+            std::cout << "Cita encontrada: \n";
+            std::cout << "Servicio: " << cita->getMedico()->getServicio() << "\n"
+                    << "Fecha: " << cita->getFecha() << "\n"
+                    << "Paciente: " << cita->getPaciente()->getNombre()
+                    << " (ID: " << cita->getPaciente()->getID() << ")\n"
+                    << "Medico: Dr. " << cita->getMedico()->getNombre()
+                    << " (ID: " << cita->getMedico()->getID() << ")\n"
+                    << "Urgencia: " << cita->getUrgencia() << "\n";
             // Solicitar y validar la nueva fecha
             std::cout << "Ingrese la nueva fecha (DD-MM-AAAA): ";
             while (true) {
@@ -272,7 +279,7 @@ public:
                         while (!(std::cin >> confirmar) || (confirmar != 1 && confirmar != 0)) {
                             std::cout << "Entrada invalida. Intente de nuevo (1 para confirmar, 0 para cancelar): ";
                             std::cin.clear();
-                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            std::cin.ignore();
                         }
                         std::cin.ignore();
 
