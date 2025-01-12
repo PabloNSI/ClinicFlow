@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.0)
 
-project(CMake)
+project(AB_UNIT20)
 
 set(lista_archivos
 main.cpp
@@ -9,13 +9,12 @@ gestorArchivos.h
 medico.h
 paciente.h
 reporte.h
-servicio.h
 )
 
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS_DEBUG "-pedantic -Wall -Wextra -std=gnu++17")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -std=gnu++17")
 
-add_executable(prueba ${lista_archivos})
+add_executable(AB_UNIT20 main.cpp)
 
-install(TARGETS prueba RUNTIME DESTINATION binaries)
+install(TARGETS AB_UNIT20 RUNTIME DESTINATION binaries)

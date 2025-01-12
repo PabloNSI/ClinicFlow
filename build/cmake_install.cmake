@@ -38,11 +38,11 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/binaries" TYPE EXECUTABLE FILES "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/prueba.exe")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/binaries/prueba.exe" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/binaries/prueba.exe")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/binaries" TYPE EXECUTABLE FILES "C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/AB_UNIT20.exe")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/binaries/AB_UNIT20.exe" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/binaries/AB_UNIT20.exe")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "C:/msys64/ucrt64/bin/strip.exe" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/binaries/prueba.exe")
+      execute_process(COMMAND "C:/msys64/ucrt64/bin/strip.exe" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/binaries/AB_UNIT20.exe")
     endif()
   endif()
 endif()

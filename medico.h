@@ -175,9 +175,6 @@ public:
         }
     }
 
-    void añadirCita(CitaMedica* cita) {
-        citas.push_back(cita);
-    }
     // Metodos de consulta (getters)
     std::string getNombre() const { return nombre; }
     int getID() const { return ID; }
