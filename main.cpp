@@ -31,8 +31,8 @@ Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int id) {
 
 int main() {
     std::vector<Paciente*> pacientes;
-    std::vector<CitaMedica*> citas;
     std::vector<Medico*> medicos;
+    std::vector<CitaMedica*> citas;
     int opcion;
     GestorArchivos gestor;
 
@@ -47,6 +47,7 @@ int main() {
         std::cout << "3. Agregar, ver o editar citas medicas\n";
         std::cout << "4. Pacientes atendidos entre fechas determinadas\n";
         std::cout << "5. Citas pendientes por medico\n";
+        std::cout << "6. Registro de historial clinico\n";
         std::cout << "0. Salir\n";
         std::cout << "Seleccione una opcion: ";
         std::cin >> opcion;
@@ -69,14 +70,58 @@ int main() {
                     switch(subopcion) {
                                         // Ver pacientes
                         case 1: {
-                            std::cout << "\n--- Lista de Pacientes ---\n\n";
-                            if (pacientes.empty()) {
-                                std::cout << "No hay pacientes registrados.\n";
-                            }else {
-                                for (const auto& paciente : pacientes) {
-                                    paciente->mostrarPaciente();
+                            int opcion;
+                            std::string fechaIngreso, nombre;
+                            do {
+                                std::cout << "\n--- MENU VER PACIENTES ---\n";
+                                std::cout << "1. Ver lista completa de pacientes\n";
+                                std::cout << "2. Buscar pacientes por fecha de ingreso\n";
+                                std::cout << "3. Buscar pacientes por ID\n";
+                                std::cout << "4. Buscar pacientes por nombre\n";
+                                std::cout << "0. Salir\n";
+                                std::cout << "Ingrese una opcion: ";
+                                std::cin >> opcion;
+                                std::cin.ignore();
+
+                                switch(opcion) {
+                                    // Ver lista completa de pacientes
+                                    case 1:{
+                                        std::cout << "\n--- Lista de Pacientes ---\n\n";
+                                        if (pacientes.empty()) {
+                                            std::cout << "No hay pacientes registrados.\n";
+                                        }else {
+                                            for (const auto& paciente : pacientes) {
+                                                paciente->mostrarPaciente();
+                                            }
+                                        }break;
+                                    }
+                                    // Ver pacientes por fecha de ingreso
+                                    case 2:{
+                                        Paciente::verPacientePorFecha(pacientes, fechaIngreso);
+                                        break;
+                                    }
+                                    // Ver pacientes por ID
+                                    case 3:{
+                                        Paciente::verPacientePorID(pacientes);
+                                        break;
+                                    }
+                                    // Ver pacientes por nombre
+                                    case 4:{
+                                        Paciente::verPacientePorNombre(pacientes);
+                                        break;
+                                    }
+
+                                    case 0:
+                                        std::cout << "Volviendo al menu de pacientes...\n";
+                                        break;
+
+                                    default:
+                                        std::cout << "Opcion no valida. Intente de nuevo.\n";
                                 }
-                            }break;
+
+                            } while (opcion != 0);
+
+                            break;
                         }
                                         // Editar pacientes
                         case 2: {
@@ -127,13 +172,13 @@ int main() {
                         case 1: {
                             int opcion;
                             std::string servicio, nombre;
-                            int id;
                             do {
                                 std::cout << "\n--- MENU VER MEDICOS ---\n";
                                 std::cout << "1. Ver lista completa de medicos\n";
                                 std::cout << "2. Buscar medico por servicio\n";
                                 std::cout << "3. Buscar medico por ID\n";
                                 std::cout << "4. Buscar medico por nombre\n";
+                                std::cout << "5. Buscar medico por disponibilidad\n";
                                 std::cout << "0. Salir\n";
                                 std::cout << "Ingrese una opcion: ";
                                 std::cin >> opcion;
@@ -142,7 +187,6 @@ int main() {
                                 switch(opcion) {
                                     // ver lista completa de medicos
                                     case 1:{
-                                        // Mostrar lista completa de médicos
                                         std::cout << "\n--- Lista de Medicos ---\n\n";
                                         if (medicos.empty()) {
                                             std::cout << "No hay medicos en el sistema.\n";
@@ -155,29 +199,22 @@ int main() {
                                     }
                                     // ver medicos por servicio
                                     case 2:{
-                                        // Buscar medico por servicio
-                                        std::cout << "Ingrese el servicio a buscar: ";
-                                        std::getline(std::cin, servicio);
-                                        Medico::verMedicoPorServicio(medicos, servicio);
+                                        Medico::verMedicoPorServicio(medicos);
                                         break;
                                     }
                                     // ver medicos por ID
                                     case 3:{
-                                        std::cout << "Ingrese el ID del medico a buscar: ";
-                                        while (!(std::cin >> id)) {
-                                            std::cout << "ID invalido. Intente de nuevo: ";
-                                            std::cin.clear();
-                                            std::cin.ignore();
-                                        }
-                                        std::cin.ignore();
-                                        Medico::verMedicoPorID(medicos, id);
+                                        Medico::verMedicoPorID(medicos);
                                         break;
                                     }
                                     // ver medicos por nombre
                                     case 4:{
-                                        std::cout << "Ingrese el nombre del medico a buscar: ";
-                                        std::getline(std::cin, nombre);
-                                        Medico::verMedicoPorNombre(medicos, nombre);
+                                        Medico::verMedicoPorNombre(medicos);
+                                        break;
+                                    }
+                                    // ver medicos por disponibilidad
+                                    case 5:{
+                                        Medico::verMedicoPorDisponibilidad(medicos);
                                         break;
                                     }
 
@@ -293,6 +330,10 @@ int main() {
                 std::cin >> medicoID;
                 Reporte reporte;
                 reporte.listarCitasPendientes(citas, "medico");
+                break;
+            }
+                            // Registro de historial clinico
+            case 6:{
                 break;
             }
             case 0:

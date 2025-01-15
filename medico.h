@@ -15,7 +15,6 @@ private:
     int ID;
     std::string servicio;
     bool disponibilidad;
-    std::vector<CitaMedica*> citas;
 
 public:
     // Constructor por defecto
@@ -58,55 +57,171 @@ public:
     }
 
         // Método para mostrar los medicos por servicio
-    static void verMedicoPorServicio(const std::vector<Medico*>& medicos, const std::string& servicio) {
-        std::cout << "\n--- Medicos en el servicio ---\n";
-        bool encontrado = false;
+    static void verMedicoPorServicio(const std::vector<Medico*>& medicos) {
+        Medico tempMedico; // Instancia para llamar a esServicioValido
+        while (true) {
+            std::cout << "Ingrese el servicio: ";
+            std::string servicio;
+            std::getline(std::cin, servicio);
 
-        for (const auto& medico : medicos) {
-            if (medico->getServicio() == servicio) {
-                medico->mostrarMedico();
-                encontrado = true;
+            // Convertir la entrada a minúsculas manualmente
+            for (char &c : servicio) {
+                c = tolower(c);  // Convertir cada carácter a minúscula
             }
-        }
 
-        if (!encontrado) {
-            std::cout << "No se encontraron medicos con el servicio: " << servicio << "\n";
+            // Validar el servicio ingresado
+            if (!tempMedico.esServicioValido(servicio)) {
+                std::cout << "El servicio ingresado no es valido. Intente nuevamente.\n";
+                continue; // Volver a solicitar el servicio
+            }
+
+            // Mostrar médicos en el servicio válido
+            std::cout << "\n--- Medicos en el servicio: " << servicio << " ---\n";
+            bool encontrado = false;
+
+            for (const auto& medico : medicos) {
+                // Convertir el servicio del médico a minúsculas para compararlo
+                std::string servicioMedico = medico->getServicio();
+                for (char &c : servicioMedico) {
+                    c = tolower(c);  // Convertir cada carácter a minúscula
+                }
+
+                if (servicioMedico == servicio) {
+                    medico->mostrarMedico();
+                    encontrado = true;
+                }
+            }
+
+            if (encontrado) {
+                break; // Salir si se encontraron médicos
+            } else {
+                std::cout << "No se encontraron medicos con el servicio: " << servicio << "\n";
+                break; // No es necesario preguntar si se desea intentar nuevamente
+            }
         }
     }
-        
+  
         // Método para mostrar medico por ID
-    static void verMedicoPorID(const std::vector<Medico*>& medicos, int id) {
+    static void verMedicoPorID(const std::vector<Medico*>& medicos) {
+        int id;
         bool encontrado = false;
 
-        for (const auto& medico : medicos) {
-            if (medico->getID() == id) {
-                medico->mostrarMedico();
-                encontrado = true;
-                break;
-            }
-        }
+        while (true) {
+            std::cout << "Ingrese el ID del medico: ";
+            std::string input;
+            std::getline(std::cin, input);
 
-        if (!encontrado) {
-            std::cout << "No se encontro un medico con ID: " << id << "\n";
+            // Validar si la entrada es un número
+            try {
+                id = std::stoi(input); // Intentar convertir a entero
+            } catch (const std::invalid_argument&) {
+                std::cout << "Por favor, ingrese un ID valido.\n";
+                continue; // Volver a pedir el ID
+            }
+
+            // Buscar el ID en la lista de médicos
+            for (const auto& medico : medicos) {
+                if (medico->getID() == id) {
+                    std::cout << "Medico encontrado:\n";
+                    medico->mostrarMedico();
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (encontrado) {
+                break;
+            } else {
+                std::cout << "No se encontro un medico con ID: " << id << "\n";
+                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+                char opcion;
+                std::cin >> opcion;
+                std::cin.ignore();
+                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                    break;
+                }
+            }
         }
     }
         
         // Método para mostra  medico por nombre
-    static void verMedicoPorNombre(const std::vector<Medico*>& medicos, const std::string& nombre) {
-        bool encontrado = false;
+    static void verMedicoPorNombre(const std::vector<Medico*>& medicos) {
+        while (true) {
+            std::cout << "Ingrese el nombre del medico: ";
+            std::string nombre;
+            std::getline(std::cin, nombre);
 
-        for (const auto& medico : medicos) {
-            if (medico->getNombre() == nombre) {
-                medico->mostrarMedico();
-                encontrado = true;
+            bool encontrado = false;
+
+            // Buscar el nombre en la lista de médicos
+            for (const auto& medico : medicos) {
+                if (medico->getNombre() == nombre) {
+                    std::cout << "Medico encontrado:\n";
+                    medico->mostrarMedico();
+                    encontrado = true;
+                }
             }
-        }
 
-        if (!encontrado) {
-            std::cout << "No se encontraron medicos con el nombre: " << nombre << "\n";
+            if (encontrado) {
+                break; // Salir del bucle si al menos un médico fue encontrado
+            } else {
+                std::cout << "No se encontraron medicos con el nombre: " << nombre << "\n";
+                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+                char opcion;
+                std::cin >> opcion;
+                std::cin.ignore();
+                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                    break;
+                }
+            }
         }
     }
         
+        // Método para mostra  medico por disponibilidad
+    static void verMedicoPorDisponibilidad(const std::vector<Medico*>& medicos) {
+        while (true) {
+            std::cout << "Ingrese la disponibilidad del medico (1 = disponible/0 = no disponible): ";
+            bool disponibilidad;
+            std::string input;
+            std::getline(std::cin, input);
+
+            // Validar si la entrada es un número y es válido (0 o 1)
+            try {
+                disponibilidad = std::stoi(input);
+                if (disponibilidad != 0 && disponibilidad != 1) {
+                    std::cout << "Por favor, ingrese 1 para disponible o 0 para no disponible.\n";
+                    continue;
+                }
+            } catch (const std::invalid_argument&) {
+                std::cout << "Por favor, ingrese un valor valido (1 o 0).\n";
+                continue;
+            }
+
+            // Buscar médicos con la disponibilidad ingresada
+            bool encontrado = false;
+            for (const auto& medico : medicos) {
+                if (medico->getDisponibilidad() == disponibilidad) {
+                    std::cout << "Medicos encontrados:\n";
+                    medico->mostrarMedico();
+                    encontrado = true;
+                }
+            }
+
+            if (encontrado) {
+                break; // Salir del bucle si se encontraron médicos
+            } else {
+                std::cout << "No se encontraron medicos. \n";
+                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+                char opcion;
+                std::cin >> opcion;
+                std::cin.ignore();
+                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                    break;
+                }
+            }
+        }
+    }
+
         // Método para agregar un medico
     void registrarMedico() {
         std::cout << "Nombre y apellidos del medico: ";

@@ -13,7 +13,6 @@ private:
     std::string nombre;
     int ID;
     std::string fechaIngreso;
-    std::vector<CitaMedica*> citas;
    
     // Método para validar la fecha
     bool esFechaValida(const std::string& fecha) const {
@@ -60,10 +59,116 @@ public:
     }
 
         // Método para mostrar los datos del paciente
-    void mostrarPaciente() const {
-        std::cout << "Nombre: " << nombre << ", ID: " << ID << "\n"
+    void mostrarPaciente() {
+        std::cout << "Nombre: " << nombre << "\n"
+        << "ID: " << ID << "\n"
         << "Fecha de ingreso: " << fechaIngreso << "\n"
         << "----------------------------" << "\n";
+    }
+        
+        // Método para mostrar los pacientes por fecha
+    static void verPacientePorFecha(const std::vector<Paciente*>& pacientes, std::string& fechaIngreso) {
+        Paciente temp; // Crear un objeto temporal de la clase Paciente para llamar a esFechaValida
+
+        while (true) {
+            std::cout << "Ingrese la fecha a buscar (DD-MM-AAAA): ";
+            std::getline(std::cin, fechaIngreso);
+
+            // Usar el objeto temporal para validar la fecha
+            if (temp.esFechaValida(fechaIngreso)) {
+                break;
+            } else {
+                std::cout << "No hay pacientes en esta fecha. Intenta de nuevo (DD-MM-AAAA).\n";
+            }
+        }
+        std::cout << "\nPacientes registrados en la fecha " << fechaIngreso << ":\n";
+        bool encontrado = false;
+
+        for (const auto& paciente : pacientes) {
+            if (paciente->getFechaIngreso() == fechaIngreso) {
+                paciente->mostrarPaciente();
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            std::cout << "No se encontraron pacientes registrados en la fecha " << fechaIngreso << "\n";
+        }
+    }
+
+        // Método para mostrar paciente por ID
+    static void verPacientePorID(const std::vector<Paciente*>& pacientes) {
+        int ID;
+        bool encontrado = false;
+
+        while (true) {
+            std::cout << "Ingrese el ID del paciente: ";
+            // Validar si la entrada es un número
+            std::string input;
+            std::getline(std::cin, input);
+
+            try {
+                ID = std::stoi(input); // Intentar convertir a entero
+            } catch (const std::invalid_argument&) {
+                std::cout << "Por favor, ingrese un ID valido.\n";
+                continue; // Volver a pedir el ID
+            }
+
+            // Buscar el ID en la lista de pacientes
+            for (const auto& paciente : pacientes) {
+                if (paciente->getID() == ID) {
+                    std::cout << "Paciente encontrado:\n";
+                    paciente->mostrarPaciente();
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (encontrado) {
+                break;
+            } else {
+                std::cout << "No se encontro un paciente con ID: " << ID << "\n";
+                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+                char opcion;
+                std::cin >> opcion;
+                std::cin.ignore();
+                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                    break;
+                }
+            }
+        }
+    }
+
+        // Método para mostrar paciente por nombre
+    static void verPacientePorNombre(const std::vector<Paciente*>& pacientes) {
+        while (true) {
+            std::cout << "Ingrese el nombre del paciente: ";
+            std::string nombre;
+            std::getline(std::cin, nombre);
+
+            bool encontrado = false;
+
+            // Buscar el nombre en la lista de pacientes
+            for (const auto& paciente : pacientes) {
+                if (paciente->getNombre() == nombre) {
+                    std::cout << "Paciente encontrado:\n";
+                    paciente->mostrarPaciente();
+                    encontrado = true;
+                }
+            }
+
+            if (encontrado) {
+                break; // Salir del bucle si al menos un paciente fue encontrado
+            } else {
+                std::cout << "No se encontraron pacientes con el nombre: " << nombre << "\n";
+                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+                char opcion;
+                std::cin >> opcion;
+                std::cin.ignore();
+                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                    break;
+                }
+            }
+        }
     }
         
         // Método para editar el paciente

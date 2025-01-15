@@ -1,17 +1,17 @@
 Dr. Juan Jimenez
 ID: 1101
 Servicio: Cardiologia
-Disponibilidad: 1
+Disponibilidad: 0
 -----------------
 Dr. Juana Gomez
 ID: 1102
 Servicio: Foniatria
-Disponibilidad: 1
+Disponibilidad: 0
 -----------------
 Dr. Ana Martinez
 ID: 1001
 Servicio: Alergologia
-Disponibilidad: 1
+Disponibilidad: 0
 -----------------
 Dr. Carlos Herrera
 ID: 1002
