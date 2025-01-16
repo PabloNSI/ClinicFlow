@@ -8,3 +8,8 @@ Paciente: Mario Ramirez (ID: 1224)
 Medico: Carlos Herrera (ID: 1002)
 Urgencia: 4
 --------------------------------------
+Fecha: 16-08-2023
+Paciente: Sofia Morales (ID: 2198)
+Medico: Felipe Torres (ID: 1018)
+Urgencia: 1
+--------------------------------------

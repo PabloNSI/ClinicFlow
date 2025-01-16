@@ -71,7 +71,7 @@ public:
         return true;
     }
     
-    // Ver citas
+    // Ver cita
     void mostrarCita() const {
         std::cout << "Servicio: " << medico->getServicio() << "\n"
                   << "Fecha: " << fecha << "\n"
@@ -81,6 +81,132 @@ public:
                   << "(ID: " << medico->getID() << ")\n"
                   << "Urgencia: " << urgencia << "\n"
                   << "-----------" << "\n";
+    }
+    
+     // Función estática para ordenar por fecha (de mayor a menor)
+    static void ordenarPorFecha(std::vector<CitaMedica*>& citas) {
+        for (size_t i = 0; i < citas.size(); ++i) {
+            for (size_t j = 0; j < citas.size() - i - 1; ++j) {
+                // Dividir la fecha en componentes (día, mes, año)
+                int dia1 = std::stoi(citas[j]->getFecha().substr(0, 2));
+                int mes1 = std::stoi(citas[j]->getFecha().substr(3, 2));
+                int año1 = std::stoi(citas[j]->getFecha().substr(6, 4));
+
+                int dia2 = std::stoi(citas[j + 1]->getFecha().substr(0, 2));
+                int mes2 = std::stoi(citas[j + 1]->getFecha().substr(3, 2));
+                int año2 = std::stoi(citas[j + 1]->getFecha().substr(6, 4));
+
+                // Comparar año, luego mes, luego día
+                if (año1 < año2 || (año1 == año2 && mes1 < mes2) || (año1 == año2 && mes1 == mes2 && dia1 < dia2)) {
+                    std::swap(citas[j], citas[j + 1]);
+                }
+            }
+        }
+    }
+
+    // Función estática para ordenar por urgencia (de mayor a menor)
+    static void ordenarPorUrgencia(std::vector<CitaMedica*>& citas) {
+        for (size_t i = 0; i < citas.size(); ++i) {
+            for (size_t j = 0; j < citas.size() - i - 1; ++j) {
+                if (citas[j]->getUrgencia() < citas[j + 1]->getUrgencia()) {
+                    std::swap(citas[j], citas[j + 1]);
+                }
+            }
+        }
+    }
+
+    // Ver todas las citas
+    static void mostrarCitas(const std::vector<CitaMedica*>& citas) {
+        for (const auto& cita : citas) {
+            cita->mostrarCita();
+        }
+    }
+
+    // Buscar citas por fecha
+    static void buscarCitasPorFecha(std::vector<CitaMedica*>& citas) {
+        std::string fecha;
+        std::cout << "Ingrese la fecha (DD-MM-AAAA) a buscar: ";
+        std::cin.ignore();
+        std::getline(std::cin, fecha);
+        std::cout << "\n";
+
+        bool encontrado = false;
+        for (CitaMedica* cita : citas) {
+            if (cita->getFecha() == fecha) {
+                cita->mostrarCita();
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            std::cout << "No se encontraron citas para la fecha ingresada.\n";
+        }
+    }
+
+    // Buscar citas por urgencia
+    static void buscarCitasPorUrgencia(std::vector<CitaMedica*>& citas) {
+        int urgencia;
+        std::cout << "Ingrese el nivel de urgencia (1-5) a buscar: ";
+        std::cin >> urgencia;
+        std::cin.ignore();
+        std::cout << "\n";
+
+        bool encontrado = false;
+        for (CitaMedica* cita : citas) {
+            if (cita->getUrgencia() == urgencia) {
+                cita->mostrarCita();
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            std::cout << "No se encontraron citas con el nivel de urgencia " << urgencia << ".\n";
+        }
+    }
+
+    // Ver citas pasadas o futuras segun una fecha
+    static void buscarCitasPorFechaComparada(std::vector<CitaMedica*>& citas) {
+        std::string fechaComparada;
+        bool esPasada;
+
+        std::cout << "Ingrese la fecha (DD-MM-AAAA): ";
+        std::cin.ignore();
+        std::getline(std::cin, fechaComparada);
+
+        std::cout << "Quieres buscar citas pasadas o futuras? (1 = pasadas / 0 = futuras): ";
+        std::cin >> esPasada;
+        std::cin.ignore();
+        std::cout << "\n";
+
+        bool encontrado = false;
+
+        // Dividir la fecha ingresada por el usuario en componentes (día, mes, año)
+        int diaComparado = std::stoi(fechaComparada.substr(0, 2));
+        int mesComparado = std::stoi(fechaComparada.substr(3, 2));
+        int añoComparado = std::stoi(fechaComparada.substr(6, 4));
+
+        for (CitaMedica* cita : citas) {
+            // Obtener la fecha de las citas
+            std::string citaFecha = cita->getFecha();
+            int diaCita = std::stoi(citaFecha.substr(0, 2));
+            int mesCita = std::stoi(citaFecha.substr(3, 2));
+            int añoCita = std::stoi(citaFecha.substr(6, 4));
+
+            // Comparar las fechas (si son pasadas o futuras)
+            bool esPasadaCita = (añoCita < añoComparado) || 
+                                (añoCita == añoComparado && mesCita < mesComparado) || 
+                                (añoCita == añoComparado && mesCita == mesComparado && diaCita < diaComparado);
+
+            // Si queremos citas pasadas, comparamos si la cita es anterior a la fecha ingresada y viceversa
+            if ((esPasada && esPasadaCita) || (!esPasada && !esPasadaCita)) {
+                cita->mostrarCita();
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            std::cout << "No se encontraron citas.\n";
+        }
     }
     
     // Registrar una cita
@@ -107,17 +233,18 @@ public:
             }
         }
         std::cin.ignore();
-        std::cout << "Pacientes disponibles:\n";
-        for (Paciente* p : pacientes) {
-            std::cout << "ID: " << p->getID() << ", Nombre: " << p->getNombre() << "\n";
-        }
-        std::cout << "Medicos disponibles:\n";
-        for (Medico* m : medicos) {
-            std::cout << "ID: " << m->getID() << ", Nombre: " << m->getNombre() << "\n";
-        }
         while (true) {
+            std::cout << "Pacientes disponibles:\n";
+            for (Paciente* p : pacientes) {
+                std::cout << "ID: " << p->getID() << ", Nombre: " << p->getNombre() << "\n";
+            }
             std::cout << "ID del paciente: ";
             std::cin >> pacienteID;
+            
+            std::cout << "Medicos disponibles:\n";
+            for (Medico* m : medicos) {
+                std::cout << "ID: " << m->getID() << ", Dr. " << m->getNombre() << "\n";
+            }
             std::cout << "ID del medico: ";
             std::cin >> medicoID;
             std::cin.ignore();

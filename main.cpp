@@ -11,6 +11,20 @@
 #include "medico.h"
 #include "reporte.h"
 
+int leerEntero(const std::string& mensaje) {
+    int numero;
+    while (true) {
+        std::cout << mensaje;
+        if (std::cin >> numero) {
+            return numero;
+        } else {
+            std::cout << "Entrada invalida. Por favor, ingrese un numero: " << std::endl;
+            std::cin.clear(); // Limpia el estado de error
+            std::cin.ignore();
+        }
+    }
+}
+
 Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int id) {
     for (Paciente* paciente : pacientes) {
         if (paciente->getID() == id) {
@@ -41,49 +55,47 @@ int main() {
     gestor.recuperarDatosCitas(citas, pacientes, medicos);
 
     do {
-        std::cout << "\n--- MENU ---\n";
-        std::cout << "1. Agregar, ver o editar paciente\n";
-        std::cout << "2. Agregar, ver o editar medico\n";
-        std::cout << "3. Agregar, ver o editar citas medicas\n";
-        std::cout << "4. Pacientes atendidos entre fechas determinadas\n";
-        std::cout << "5. Citas pendientes por medico\n";
-        std::cout << "6. Registro de historial clinico\n";
-        std::cout << "0. Salir\n";
-        std::cout << "Seleccione una opcion: ";
-        std::cin >> opcion;
+        opcion = leerEntero(
+            "\n--- MENU ---\n"
+            "1. Agregar, ver o editar paciente\n"
+            "2. Agregar, ver o editar medico\n"
+            "3. Agregar, ver o editar citas medicas\n"
+            "4. Pacientes atendidos entre fechas determinadas\n"
+            "5. Citas pendientes por medico\n"
+            "6. Registro de historial clinico\n"
+            "0. Salir\n"
+            "Seleccione una opcion: ");
 
         switch(opcion) {
                             // Agregar, ver o editar paciente
             case 1: {
                 int subopcion;
                 do {
-                    std::cout << "\n--- MENU PACIENTES ---\n";
-                    std::cout << "1. Ver pacientes\n";
-                    std::cout << "2. Editar paciente\n";
-                    std::cout << "3. Eliminar paciente\n";
-                    std::cout << "4. Registrar paciente\n";
-                    std::cout << "0. Volver al menu principal\n";
-                    std::cout << "Seleccione una opcion: ";
-                    std::cin >> subopcion;
-                    std::cin.ignore(); // Limpiar el buffer de entrada
+                    subopcion = leerEntero(
+                        "\n--- MENU PACIENTES ---\n"
+                        "1. Ver pacientes\n"
+                        "2. Editar paciente\n"
+                        "3. Eliminar paciente\n"
+                        "4. Registrar paciente\n"
+                        "0. Volver al menu principal\n"
+                        "Seleccione una opcion: ");
 
                     switch(subopcion) {
                                         // Ver pacientes
                         case 1: {
-                            int opcion;
+                            int subopcion2;
                             std::string fechaIngreso, nombre;
                             do {
-                                std::cout << "\n--- MENU VER PACIENTES ---\n";
-                                std::cout << "1. Ver lista completa de pacientes\n";
-                                std::cout << "2. Buscar pacientes por fecha de ingreso\n";
-                                std::cout << "3. Buscar pacientes por ID\n";
-                                std::cout << "4. Buscar pacientes por nombre\n";
-                                std::cout << "0. Salir\n";
-                                std::cout << "Ingrese una opcion: ";
-                                std::cin >> opcion;
-                                std::cin.ignore();
+                                subopcion2 = leerEntero(
+                                "\n--- MENU VER PACIENTES ---\n"
+                                "1. Ver lista completa de pacientes\n"
+                                "2. Buscar pacientes por fecha de ingreso\n"
+                                "3. Buscar pacientes por ID\n"
+                                "4. Buscar pacientes por nombre\n"
+                                "0. Salir\n"
+                                "Ingrese una opcion: ");
 
-                                switch(opcion) {
+                                switch(subopcion2) {
                                     // Ver lista completa de pacientes
                                     case 1:{
                                         std::cout << "\n--- Lista de Pacientes ---\n\n";
@@ -119,7 +131,7 @@ int main() {
                                         std::cout << "Opcion no valida. Intente de nuevo.\n";
                                 }
 
-                            } while (opcion != 0);
+                            } while (subopcion2 != 0);
 
                             break;
                         }
@@ -157,34 +169,32 @@ int main() {
             case 2: {
                 int subopcion;
                 do {
-                    std::cout << "\n--- MENU MEDICOS ---\n";
-                    std::cout << "1. Ver medicos\n";
-                    std::cout << "2. Editar medico\n";
-                    std::cout << "3. Eliminar medico\n";
-                    std::cout << "4. Registrar medico\n";
-                    std::cout << "0. Volver al menu principal\n";
-                    std::cout << "Seleccione una opcion: ";
-                    std::cin >> subopcion;
-                    std::cin.ignore();
+                    subopcion = leerEntero(
+                        "\n--- MENU MEDICOS ---\n"
+                        "1. Ver medicos\n"
+                        "2. Editar medico\n"
+                        "3. Eliminar medico\n"
+                        "4. Registrar medico\n"
+                        "0. Volver al menu principal\n"
+                        "Seleccione una opcion: ");
 
                     switch(subopcion) {
                                     // ver medicos
                         case 1: {
-                            int opcion;
+                            int subopcion2;
                             std::string servicio, nombre;
                             do {
-                                std::cout << "\n--- MENU VER MEDICOS ---\n";
-                                std::cout << "1. Ver lista completa de medicos\n";
-                                std::cout << "2. Buscar medico por servicio\n";
-                                std::cout << "3. Buscar medico por ID\n";
-                                std::cout << "4. Buscar medico por nombre\n";
-                                std::cout << "5. Buscar medico por disponibilidad\n";
-                                std::cout << "0. Salir\n";
-                                std::cout << "Ingrese una opcion: ";
-                                std::cin >> opcion;
-                                std::cin.ignore();
+                                subopcion2 = leerEntero(
+                                "\n--- MENU VER MEDICOS ---\n"
+                                "1. Ver lista completa de medicos\n"
+                                "2. Buscar medico por servicio\n"
+                                "3. Buscar medico por ID\n"
+                                "4. Buscar medico por nombre\n"
+                                "5. Buscar medico por disponibilidad\n"
+                                "0. Salir\n"
+                                "Ingrese una opcion: ");
 
-                                switch(opcion) {
+                                switch(subopcion2) {
                                     // ver lista completa de medicos
                                     case 1:{
                                         std::cout << "\n--- Lista de Medicos ---\n\n";
@@ -226,7 +236,7 @@ int main() {
                                         std::cout << "Opcion no valida. Intente de nuevo.\n";
                                 }
 
-                            } while (opcion != 0);
+                            } while (subopcion2 != 0);
 
                             break;
                         }
@@ -261,30 +271,91 @@ int main() {
                 break;
             }
                             // Agregar, ver o editar citas medicas
-            case 3:{
+            case 3: {
                 int subopcion;
                 do {
-                    std::cout << "\n--- MENU CITAS MEDICAS ---\n";
-                    std::cout << "1. Ver citas\n";
-                    std::cout << "2. Editar cita\n";
-                    std::cout << "3. Eliminar cita\n";
-                    std::cout << "4. Registrar cita\n";
-                    std::cout << "0. Volver al menu principal\n";
-                    std::cout << "Seleccione una opcion: ";
-                    std::cin >> subopcion;
-                    std::cin.ignore();
+                    subopcion = leerEntero(
+                        "\n--- MENU CITAS MEDICAS ---\n"
+                        "1. Ver citas\n"
+                        "2. Editar cita\n"
+                        "3. Eliminar cita\n"
+                        "4. Registrar cita\n"
+                        "0. Volver al menu principal\n"
+                        "Seleccione una opcion: ");
 
                     switch(subopcion) {
-                                    // ver cita
+                                    // ver citas
                         case 1: {
-                            std::cout << "\n--- Lista de Citas ---\n\n";
-                            if (citas.empty()) {
-                                std::cout << "No hay citas registradas.\n";
-                            } else {
-                                for (const auto& cita : citas) {
-                                    cita->mostrarCita();
+                            int subopcion2;
+                            std::string servicio, nombre;
+                            do {
+                                subopcion2 = leerEntero(
+                                "\n--- MENU VER CITAS ORDENADAS ---\n"
+                                "1. Ver las citas ordenadas\n"
+                                "2. Buscar citas por fecha\n"
+                                "3. Buscar citas por urgencia\n"
+                                "4. Ver citas pasadas o futuras segun una fecha\n"
+                                "0. Salir\n"
+                                "Ingrese una opcion: ");
+
+                                switch(subopcion2) {
+                                    
+                                    // Ver todas las citas ordenadas por fecha/urgencia
+                                    case 1: {
+                                        int subopcion3;
+                                        do{
+                                            subopcion3 = leerEntero(
+                                            "\n--- VER CITAS POR FECHA O URGENCIA ---\n"
+                                            "1. Ver citas por fecha\n"
+                                            "2. Ver citas por urgencia\n"
+                                            "0. Salir\n"
+                                            "Ingrese una opcion: ");
+                                            switch(subopcion3) {
+                                                // Ver citas por fecha
+                                                case 1: {
+                                                    std::cout << "\n--- Citas ordenadas por fecha ---\n\n";
+                                                    CitaMedica::ordenarPorFecha(citas);
+                                                    CitaMedica::mostrarCitas(citas);
+                                                    break;
+                                                    
+                                                }
+                                                // Ver citas por urgencia
+                                                case 2: {
+                                                    std::cout << "\n--- Citas ordenadas por urgencia ---\n\n";
+                                                    CitaMedica::ordenarPorUrgencia(citas);
+                                                    CitaMedica::mostrarCitas(citas);
+                                                    break;
+                                                }
+                                            }
+                                        }while (subopcion3 != 0);
+                                        break;
+                                    }
+                                    // Buscar citas por fecha
+                                    case 2: {
+                                        CitaMedica::buscarCitasPorFecha(citas);
+                                        break;
+                                    }
+                                    // Buscar citas por urgencia
+                                    case 3: {
+                                        CitaMedica::buscarCitasPorUrgencia(citas);
+                                        break;
+                                    }
+                                    // Ver citas pasadas o futuras segun una fecha
+                                    case 4: {
+                                        CitaMedica::buscarCitasPorFechaComparada(citas);
+                                        break;
+                                    }
+                                    
+                                    case 0:
+                                        std::cout << "Volviendo al menu de medicos...\n";
+                                        break;
+
+                                    default:
+                                        std::cout << "Opcion no valida. Intente de nuevo.\n";
                                 }
-                            }
+
+                            } while (subopcion2 != 0);
+
                             break;
                         }
                                     // Editar cita
@@ -333,7 +404,7 @@ int main() {
                 break;
             }
                             // Registro de historial clinico
-            case 6:{
+            case 6: {
                 break;
             }
             case 0:
