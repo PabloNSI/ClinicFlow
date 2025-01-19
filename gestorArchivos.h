@@ -7,14 +7,50 @@
 #include <iomanip>
 #include "paciente.h"
 #include "medico.h"
+#include <filesystem> // para el uso de std::filesystem -> backup
+
+namespace fs = std::filesystem;
 
 Paciente* buscarPacientePorID(const std::vector<Paciente*>& pacientes, int id);
 Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int id);
 
 class GestorArchivos {
 public:
+    // Función para realizar un respaldo de un archivo
+    void respaldarArchivo(const std::string& archivoOriginal) {
+        // Verificar si la carpeta "backup" existe, si no, crearla
+        if (!fs::exists("backup")) {
+            fs::create_directory("backup");
+        }
+
+        std::ifstream src(archivoOriginal, std::ios::binary);
+        if (!src) {
+            std::cerr << "Error al abrir el archivo para el respaldo." << std::endl;
+            return;
+        }
+
+        // Crear nombre de archivo con fecha y hora en la carpeta "backup"
+        std::time_t now = std::time(nullptr);
+        std::tm* localTime = std::localtime(&now);
+        std::ostringstream nombreBackup;
+        nombreBackup << "backup/" << archivoOriginal.substr(0, archivoOriginal.find_last_of('.')) // Nombre sin extensión
+                     << "_backup_"
+                     << std::put_time(localTime, "%Y-%m-%d_%H-%M-%S")
+                     << ".bak";  // Extensión del archivo de backup
+
+        std::ofstream dest(nombreBackup.str(), std::ios::binary);
+        if (!dest) {
+            std::cerr << "Error al crear el archivo de respaldo." << std::endl;
+            return;
+        }
+
+        dest << src.rdbuf();  // Copiar contenido del archivo original al backup
+        std::cout << "Respaldo creado exitosamente: " << nombreBackup.str() << std::endl;
+    }
+  
     // Función para guardar los datos de los pacientes
 void guardarDatosPacientes(const std::vector<Paciente*>& pacientes) {
+        respaldarArchivo("pacientes.txt");  // Respaldo antes de guardar
         std::ofstream archivo("pacientes.txt");
         if (!archivo.is_open()) {
             std::cerr << "No se pudo abrir el archivo para guardar los pacientes." << std::endl;
@@ -57,6 +93,7 @@ void recuperarDatosPacientes(std::vector<Paciente*>& pacientes) {
     
     // Función para guardar los datos de los medicos
 void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
+     respaldarArchivo("medicos.txt");  // Respaldo antes de guardar
     std::ofstream archivo("medicos.txt");
     if (!archivo.is_open()) {
         std::cerr << "No se pudo abrir el archivo medicos.txt para escribir." << std::endl;
@@ -106,6 +143,7 @@ void recuperarDatosMedicos(std::vector<Medico*>& medicos) {
     
     // Función para guardar los datos de las citas
 void guardarDatosCitas(const std::vector<CitaMedica*>& citas) {
+    respaldarArchivo("citas.txt");  // Respaldo antes de guardar
     std::ofstream archivo("citas.txt");
     if (!archivo.is_open()) {
         std::cerr << "No se pudo abrir el archivo citas.txt para escribir.\n";
