@@ -38,7 +38,7 @@ public:
     bool esServicioValido(const std::string& servicio) {
         std::ifstream archivo("servicios.txt");
         if (!archivo.is_open()) {
-            std::cerr << "Error: No se pudo abrir el archivo servicios.txt" << std::endl;
+            std::cerr << "Error: No se pudo abrir el archivo servicios.txt\n";
             return false;
     }
 

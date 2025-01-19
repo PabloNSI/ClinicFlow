@@ -60,8 +60,7 @@ int main() {
             "1. Agregar, ver o editar paciente\n"
             "2. Agregar, ver o editar medico\n"
             "3. Agregar, ver o editar citas medicas\n"
-            "5. Citas pendientes por medico\n"
-            "6. Registro de historial clinico\n"
+            "4. Registro de historial clinico\n"
             "0. Salir\n"
             "Seleccione una opcion: ");
 
@@ -300,6 +299,8 @@ int main() {
                                 "2. Buscar citas por fecha\n"
                                 "3. Buscar citas por urgencia\n"
                                 "4. Ver citas pasadas o futuras segun una fecha\n"
+                                "5. Citas pendientes por medico\n"
+                                "6. Citas pendientes por servicio\n"
                                 "0. Salir\n"
                                 "Ingrese una opcion: ");
 
@@ -350,9 +351,20 @@ int main() {
                                         CitaMedica::buscarCitasPorFechaComparada(citas);
                                         break;
                                     }
+                                    // Citas pendientes por medico
+                                    case 5: {
+                                        CitaMedica::listarCitasPendientesPorMedico(citas);
+                                        break;
+                                    }
+                                    // Citas pendientes por servicio
+                                    case 6: {
+                                        CitaMedica::listarCitasPendientesPorServicio(citas);
+                                        break;
+                                    }
+
                                     
                                     case 0:
-                                        std::cout << "Volviendo al menu de medicos...\n";
+                                        std::cout << "Volviendo al menu de citas...\n";
                                         break;
 
                                     default:
@@ -388,20 +400,8 @@ int main() {
                 } while (subopcion != 0);
                 break;
             }
-                            // Citas pendientes por medico o servicio
-            case 5: {
-                // Listado de pacientes atendidos en un rango de fechas.
-                // Citas pendientes por médico o especialidad.
-                // Reporte de pacientes con enfermedades crónicas.
-                int medicoID;
-                std::cout << "ID del medico: ";
-                std::cin >> medicoID;
-                Reporte reporte;
-                reporte.listarCitasPendientes(citas, "medico");
-                break;
-            }
                             // Registro de historial clinico
-            case 6: {
+            case 4: {
                 Reporte reporte;
                 reporte.verHistorialClinico(citas);
                 break;

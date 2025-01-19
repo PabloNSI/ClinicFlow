@@ -293,6 +293,82 @@ public:
         }
     }
 
+   // Función estática para listar las citas pendientes por médico
+    static void listarCitasPendientesPorMedico(const std::vector<CitaMedica*>& citas) {
+        std::string nombreMedico;
+        std::cin.ignore();
+        std::cout << "Ingrese el nombre del medico: ";
+        std::getline(std::cin, nombreMedico);
+        // Buscar si el medico existe en alguna de las citas
+        bool medicoEncontrado = false;
+        for (const auto& cita : citas) {
+            if (cita->getMedico()->getNombre() == nombreMedico) {
+                medicoEncontrado = true;
+                break;
+            }
+        }
+        if (!medicoEncontrado) {
+            std::cout << "El medico ingresado no tiene citas pendientes.\n";
+            std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+            int opcion;
+            std::cin >> opcion;
+            if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                return;
+            } else {
+                listarCitasPendientesPorMedico(citas);
+            }
+        } else {
+            std::cout << "Citas pendientes de " << nombreMedico << ":\n\n";
+            for (const auto& cita : citas) {
+                if (cita->getMedico()->getNombre() == nombreMedico) {
+                    cita->mostrarCita();
+                }
+            }
+        }
+    }
+
+    // Función estática para listar las citas pendientes por servicio
+    static void listarCitasPendientesPorServicio(const std::vector<CitaMedica*>& citas) {
+        while (true) {
+            std::string servicio;
+            std::cin.ignore();
+            std::cout << "Ingrese el servicio: ";
+            std::getline(std::cin, servicio);
+            // Verificar si el servicio es valido
+            Medico tempMedico;
+            if (!tempMedico.esServicioValido(servicio)) {
+                std::cout << "El servicio ingresado no es valido.\n";
+                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+                char opcion;
+                std::cin >> opcion;
+                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                    return;
+                }
+                continue;
+            }
+            std::cout << "Citas pendientes en " << servicio << "\n\n";
+            bool citasEncontradas = false;
+            for (const auto& cita : citas) {
+                if (cita->getMedico()->getServicio() == servicio) {
+                    cita->mostrarCita();
+                    citasEncontradas = true;
+                }
+            }
+            if (!citasEncontradas) {
+                std::cout << "No hay citas pendientes en este servicio.\n";
+                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
+                char opcion;
+                std::cin >> opcion;
+                std::cin.ignore();
+                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
+                    return;
+                }
+                continue;
+            }
+            break;
+        }
+    }
+
 // FUNCIONES DEL CRUD     
     // Ver cita
     void mostrarCita() const {
@@ -301,7 +377,7 @@ public:
                   << "Paciente: " << paciente->getNombre()
                   << " (ID: " << paciente->getID() << ")" << "\n"
                   << "Medico: Dr. " << medico->getNombre()
-                  << "(ID: " << medico->getID() << ")\n"
+                  << "( ID: " << medico->getID() << ")" << "\n"
                   << "Urgencia: " << urgencia << "\n"
                   << "-----------" << "\n";
     }
