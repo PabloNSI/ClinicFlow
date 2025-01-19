@@ -110,8 +110,60 @@ public:
         }
     }
 
+    // Función para modificar enfermedad crónica y guardar en un archivo
+    void modificarEnfermedadCronica(const std::vector<Paciente*>& pacientes) {
+        std::string nombrePaciente;
+        bool encontrado = false;
+        char reintentar;
+
+        do {
+            std::cout << "Ingrese el nombre del paciente: ";
+            std::cin.ignore();
+            std::getline(std::cin, nombrePaciente);
+
+            for (const auto& paciente : pacientes) {
+                if (paciente->getNombre() == nombrePaciente) {
+                    encontrado = true;
+                    bool enfermedadCronica;
+                    std::cout << "Paciente encontrado: " << paciente->getNombre() << "\n";
+                    std::cout << "Modificar si tiene enfermedad cronica (1 para Si, 0 para No): ";
+                    std::cin >> enfermedadCronica;
+
+                    guardarEnArchivo(paciente->getNombre(), enfermedadCronica);
+                    std::cout << "Informacion actualizada y guardada correctamente.\n";
+                    break;
+                }
+            }
+
+            if (!encontrado) {
+                std::cout << "Paciente no encontrado. Desea intentar de nuevo? (S/N): ";
+                std::cin >> reintentar;
+                reintentar = tolower(reintentar);
+            } else {
+                reintentar = 'n';
+            }
+        } while (reintentar == 's');
+
+        if (!encontrado) {
+            std::cout << "Operacion cancelada. No se encontro el paciente.\n";
+        }
+    }
+
 private:
-bool tieneEnfermedadCronica(Paciente*) {
-        return true;
+    bool tieneEnfermedadCronica(Paciente*) {
+            return true;
+        }
+    
+    void guardarEnArchivo(const std::string& nombrePaciente, bool enfermedadCronica) {
+        std::ofstream archivo("pacientes_cronicos.txt", std::ios::app);
+
+        if (archivo.is_open()) {
+            archivo << "Nombre: " << nombrePaciente << "\n";
+            archivo << "Enfermedad cronica: " << (enfermedadCronica ? "Si" : "No") << "\n";
+            archivo << "--------------------------\n";
+            archivo.close();
+        } else {
+            std::cerr << "No se pudo abrir el archivo para guardar la informacion.\n";
+        }
     }
 };

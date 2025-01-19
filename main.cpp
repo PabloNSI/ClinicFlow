@@ -49,6 +49,7 @@ int main() {
     std::vector<CitaMedica*> citas;
     int opcion;
     GestorArchivos gestor;
+    Reporte reporte;
 
     gestor.recuperarDatosPacientes(pacientes);
     gestor.recuperarDatosMedicos(medicos);
@@ -61,6 +62,7 @@ int main() {
             "2. Agregar, ver o editar medico\n"
             "3. Agregar, ver o editar citas medicas\n"
             "4. Registro de historial clinico\n"
+            "5. Registrar enfermedad cronica\n"
             "0. Salir\n"
             "Seleccione una opcion: ");
 
@@ -405,7 +407,11 @@ int main() {
                 reporte.verHistorialClinico(citas);
                 break;
             }
-
+                            // Registrar enfermedad cronica
+            case 5: {
+                reporte.modificarEnfermedadCronica(pacientes);
+                break;
+            }
             case 0:
                 std::cout << "Saliendo del programa...\n";
                 break;
@@ -430,6 +436,9 @@ int main() {
     for (CitaMedica* c : citas) {
         delete c;
     }
-
+    for (auto paciente : pacientes) {
+        delete paciente;
+    }
+    
     return 0;
 }
