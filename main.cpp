@@ -361,7 +361,6 @@ int main() {
                                         CitaMedica::listarCitasPendientesPorServicio(citas);
                                         break;
                                     }
-
                                     
                                     case 0:
                                         std::cout << "Volviendo al menu de citas...\n";

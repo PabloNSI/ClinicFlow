@@ -293,7 +293,7 @@ public:
         }
     }
 
-   // Función estática para listar las citas pendientes por médico
+    // Función estática para listar las citas pendientes por médico
     static void listarCitasPendientesPorMedico(const std::vector<CitaMedica*>& citas) {
         std::string nombreMedico;
         std::cin.ignore();
@@ -318,11 +318,47 @@ public:
                 listarCitasPendientesPorMedico(citas);
             }
         } else {
-            std::cout << "Citas pendientes de " << nombreMedico << ":\n\n";
+            // Solicitar la fecha actual
+            std::string fechaActual;
+            while (true) {
+                std::cout << "Ingrese la fecha actual (DD-MM-AAAA): ";
+                std::cin >> fechaActual;
+
+                if (esFechaValida(fechaActual)) {
+                    break;
+                } else {
+                    std::cout << "Fecha invalida. Intente nuevamente.\n";
+                }
+            }
+
+            // Extraer día, mes y año de la fecha actual
+            int diaActual = std::stoi(fechaActual.substr(0, 2));
+            int mesActual = std::stoi(fechaActual.substr(3, 2));
+            int añoActual = std::stoi(fechaActual.substr(6, 4));
+
+            bool citasEncontradas = false;
             for (const auto& cita : citas) {
                 if (cita->getMedico()->getNombre() == nombreMedico) {
-                    cita->mostrarCita();
+                    // Obtener la fecha de la cita
+                    std::string citaFecha = cita->getFecha();
+                    int diaCita = std::stoi(citaFecha.substr(0, 2));
+                    int mesCita = std::stoi(citaFecha.substr(3, 2));
+                    int añoCita = std::stoi(citaFecha.substr(6, 4));
+
+                    // Comparar la fecha de la cita con la fecha actual
+                    bool esFutura = (añoCita > añoActual) ||
+                                    (añoCita == añoActual && mesCita > mesActual) ||
+                                    (añoCita == añoActual && mesCita == mesActual && diaCita > diaActual);
+
+                    if (esFutura) {
+                        cita->mostrarCita();
+                        citasEncontradas = true;
+                    }
                 }
+            }
+
+            if (!citasEncontradas) {
+                std::cout << "No hay citas pendientes para  " << nombreMedico << ".\n";
             }
         }
     }
@@ -346,14 +382,45 @@ public:
                 }
                 continue;
             }
-            std::cout << "Citas pendientes en " << servicio << "\n\n";
+            // Solicitar la fecha actual
+            std::string fechaActual;
+            while (true) {
+                std::cout << "Ingrese la fecha actual (DD-MM-AAAA): ";
+                std::cin >> fechaActual;
+
+                if (esFechaValida(fechaActual)) {
+                    break;
+                } else {
+                    std::cout << "Fecha invalida. Intente nuevamente.\n";
+                }
+            }
+
+            // Extraer día, mes y año de la fecha actual
+            int diaActual = std::stoi(fechaActual.substr(0, 2));
+            int mesActual = std::stoi(fechaActual.substr(3, 2));
+            int añoActual = std::stoi(fechaActual.substr(6, 4));
+
             bool citasEncontradas = false;
             for (const auto& cita : citas) {
                 if (cita->getMedico()->getServicio() == servicio) {
-                    cita->mostrarCita();
-                    citasEncontradas = true;
+                    // Obtener la fecha de la cita
+                    std::string citaFecha = cita->getFecha();
+                    int diaCita = std::stoi(citaFecha.substr(0, 2));
+                    int mesCita = std::stoi(citaFecha.substr(3, 2));
+                    int añoCita = std::stoi(citaFecha.substr(6, 4));
+
+                    // Comparar la fecha de la cita con la fecha actual
+                    bool esFutura = (añoCita > añoActual) ||
+                                    (añoCita == añoActual && mesCita > mesActual) ||
+                                    (añoCita == añoActual && mesCita == mesActual && diaCita > diaActual);
+
+                    if (esFutura) {
+                        cita->mostrarCita();
+                        citasEncontradas = true;
+                    }
                 }
             }
+
             if (!citasEncontradas) {
                 std::cout << "No hay citas pendientes en este servicio.\n";
                 std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
