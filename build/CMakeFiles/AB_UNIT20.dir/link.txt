@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\AB_UNIT20.dir/objects.a
-C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\AB_UNIT20.dir/objects.a @CMakeFiles\AB_UNIT20.dir\objects1.rsp
-C:\msys64\ucrt64\bin\g++.exe -pedantic -Wall -Wextra -std=gnu++17 -Wl,--whole-archive CMakeFiles\AB_UNIT20.dir/objects.a -Wl,--no-whole-archive -o AB_UNIT20.exe -Wl,--out-implib,libAB_UNIT20.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\AB_UNIT20.dir\linkLibs.rsp

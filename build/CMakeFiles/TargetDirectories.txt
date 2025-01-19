@@ -1,7 +1,0 @@
-C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/AB_UNIT20.dir
-C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/edit_cache.dir
-C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/rebuild_cache.dir
-C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/list_install_components.dir
-C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/install.dir
-C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/install/local.dir
-C:/Users/pablo/OneDrive/Escritorio/MSMK/2 - U20/AB_code/build/CMakeFiles/install/strip.dir
