@@ -46,16 +46,8 @@ public:
     }
     return false;
     }
-        
-        // Método para mostrar todos los medicos
-    void mostrarMedico() const {
-        // Como el dato tipo int omite los ceros a la izq, se usa setw y setfill para mostrarlos
-        std::cout << "Dr. " << nombre << ", ID: " << std::setw(4) << std::setfill('0') << ID << "\n"
-        << "Servicio: " << servicio << "\n"
-        << "Disponibilidad: " << disponibilidad << "\n"
-        << "------------------" << "\n";
-    }
 
+// FUNCIONES ADICIONALES DE VER MEDICO       
         // Método para mostrar los medicos por servicio
     static void verMedicoPorServicio(const std::vector<Medico*>& medicos) {
         Medico tempMedico; // Instancia para llamar a esServicioValido
@@ -144,7 +136,7 @@ public:
         }
     }
         
-        // Método para mostra  medico por nombre
+        // Método para mostrar  medico por nombre
     static void verMedicoPorNombre(const std::vector<Medico*>& medicos) {
         while (true) {
             std::cout << "Ingrese el nombre del medico: ";
@@ -177,7 +169,7 @@ public:
         }
     }
         
-        // Método para mostra  medico por disponibilidad
+        // Método para mostrar  medico por disponibilidad
     static void verMedicoPorDisponibilidad(const std::vector<Medico*>& medicos) {
         while (true) {
             std::cout << "Ingrese la disponibilidad del medico (1 = disponible/0 = no disponible): ";
@@ -220,6 +212,16 @@ public:
                 }
             }
         }
+    }
+
+// FUNCIONES DEL CRUD
+        // Método para mostrar todos los medicos
+    void mostrarMedico() const {
+        // Como el dato tipo int omite los ceros a la izq, se usa setw y setfill para mostrarlos
+        std::cout << "Dr. " << nombre << ", ID: " << std::setw(4) << std::setfill('0') << ID << "\n"
+        << "Servicio: " << servicio << "\n"
+        << "Disponibilidad: " << disponibilidad << "\n"
+        << "------------------" << "\n";
     }
 
         // Método para agregar un medico

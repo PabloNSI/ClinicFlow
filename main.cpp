@@ -396,6 +396,9 @@ int main() {
             }
                             // Citas pendientes por medico
             case 5: {
+                // Listado de pacientes atendidos en un rango de fechas.
+                // Citas pendientes por médico o especialidad.
+                // Reporte de pacientes con enfermedades crónicas.
                 int medicoID;
                 std::cout << "ID del medico: ";
                 std::cin >> medicoID;

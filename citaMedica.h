@@ -70,19 +70,8 @@ public:
 
         return true;
     }
-    
-    // Ver cita
-    void mostrarCita() const {
-        std::cout << "Servicio: " << medico->getServicio() << "\n"
-                  << "Fecha: " << fecha << "\n"
-                  << "Paciente: " << paciente->getNombre()
-                  << " (ID: " << paciente->getID() << ")" << "\n"
-                  << "Medico: Dr. " << medico->getNombre()
-                  << "(ID: " << medico->getID() << ")\n"
-                  << "Urgencia: " << urgencia << "\n"
-                  << "-----------" << "\n";
-    }
-    
+
+// FUNCIONES ADICIONALES DE VER CITAS MEDICAS      
      // Función estática para ordenar por fecha (de mayor a menor)
     static void ordenarPorFecha(std::vector<CitaMedica*>& citas) {
         for (size_t i = 0; i < citas.size(); ++i) {
@@ -209,6 +198,19 @@ public:
         }
     }
     
+        // Ver cita
+    void mostrarCita() const {
+        std::cout << "Servicio: " << medico->getServicio() << "\n"
+                  << "Fecha: " << fecha << "\n"
+                  << "Paciente: " << paciente->getNombre()
+                  << " (ID: " << paciente->getID() << ")" << "\n"
+                  << "Medico: Dr. " << medico->getNombre()
+                  << "(ID: " << medico->getID() << ")\n"
+                  << "Urgencia: " << urgencia << "\n"
+                  << "-----------" << "\n";
+    }
+
+// FUNCIONES DEL CRUD 
     // Registrar una cita
     static void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medicos, std::vector<CitaMedica*>& citas) {
         std::string fecha;

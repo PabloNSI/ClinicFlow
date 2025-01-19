@@ -57,15 +57,7 @@ public:
             std::cout << "Error: La fecha debe tener el formato dd-MM-AAAA." << std::endl;
         }
     }
-
-        // Método para mostrar los datos del paciente
-    void mostrarPaciente() {
-        std::cout << "Nombre: " << nombre << "\n"
-        << "ID: " << ID << "\n"
-        << "Fecha de ingreso: " << fechaIngreso << "\n"
-        << "----------------------------" << "\n";
-    }
-        
+// FUNCIONES ADICIONALES DE VER PACIENTE        
         // Método para mostrar los pacientes por fecha
     static void verPacientePorFecha(const std::vector<Paciente*>& pacientes, std::string& fechaIngreso) {
         Paciente temp; // Crear un objeto temporal de la clase Paciente para llamar a esFechaValida
@@ -170,7 +162,16 @@ public:
             }
         }
     }
-        
+
+// FUNCIONES DEL CRUD 
+        // Método para mostrar los datos del paciente
+    void mostrarPaciente() {
+        std::cout << "Nombre: " << nombre << "\n"
+        << "ID: " << ID << "\n"
+        << "Fecha de ingreso: " << fechaIngreso << "\n"
+        << "----------------------------" << "\n";
+    }
+
         // Método para editar el paciente
     void editarPaciente(std::vector<Paciente*>& pacientes) {
         int idPaciente;
