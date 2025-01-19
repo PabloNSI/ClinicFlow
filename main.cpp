@@ -50,6 +50,7 @@ int main() {
     int opcion;
     GestorArchivos gestor;
     Reporte reporte;
+    bool enfermedadCronica = true;
 
     gestor.recuperarDatosPacientes(pacientes);
     gestor.recuperarDatosMedicos(medicos);
@@ -412,6 +413,7 @@ int main() {
                 reporte.modificarEnfermedadCronica(pacientes);
                 break;
             }
+            
             case 0:
                 std::cout << "Saliendo del programa...\n";
                 break;
@@ -425,6 +427,7 @@ int main() {
     gestor.guardarDatosPacientes(pacientes);
     gestor.guardarDatosMedicos(medicos);
     gestor.guardarDatosCitas(citas);
+    gestor.guardarEnArchivo(pacientes[0]->getNombre(), enfermedadCronica);
 
     // Liberar memoria
     for (Paciente* p : pacientes) {
@@ -439,6 +442,6 @@ int main() {
     for (auto paciente : pacientes) {
         delete paciente;
     }
-    
+
     return 0;
 }

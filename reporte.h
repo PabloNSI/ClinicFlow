@@ -8,6 +8,7 @@
 #include "citaMedica.h"
 #include "paciente.h"
 #include "medico.h"
+#include "gestorArchivos.h"
 
 class Reporte {
 public:
@@ -128,8 +129,6 @@ public:
                     std::cout << "Paciente encontrado: " << paciente->getNombre() << "\n";
                     std::cout << "Modificar si tiene enfermedad cronica (1 para Si, 0 para No): ";
                     std::cin >> enfermedadCronica;
-
-                    guardarEnArchivo(paciente->getNombre(), enfermedadCronica);
                     std::cout << "Informacion actualizada y guardada correctamente.\n";
                     break;
                 }
@@ -154,16 +153,4 @@ private:
             return true;
         }
     
-    void guardarEnArchivo(const std::string& nombrePaciente, bool enfermedadCronica) {
-        std::ofstream archivo("pacientes_cronicos.txt", std::ios::app);
-
-        if (archivo.is_open()) {
-            archivo << "Nombre: " << nombrePaciente << "\n";
-            archivo << "Enfermedad cronica: " << (enfermedadCronica ? "Si" : "No") << "\n";
-            archivo << "--------------------------\n";
-            archivo.close();
-        } else {
-            std::cerr << "No se pudo abrir el archivo para guardar la informacion.\n";
-        }
-    }
 };

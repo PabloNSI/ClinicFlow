@@ -205,4 +205,22 @@ void recuperarDatosCitas(std::vector<CitaMedica*>& citas,
 
     archivo.close();
 }
+
+    void guardarEnArchivo(const std::string& nombrePaciente, bool enfermedadCronica) {
+        respaldarArchivo("pacientes_cronicos.txt");
+        std::ofstream archivo("pacientes_cronicos.txt");
+        if (!archivo.is_open()) {
+        std::cerr << "No se pudo abrir el archivo citas.txt para escribir.\n";
+        return;
+        }
+
+        else if (archivo.is_open()) {
+            archivo << "Nombre: " << nombrePaciente << "\n";
+            archivo << "Enfermedad cronica: " << (enfermedadCronica ? "Si" : "No") << "\n";
+            archivo << "--------------------------\n";
+            archivo.close();
+        } else {
+            std::cerr << "No se pudo abrir el archivo para guardar la informacion.\n";
+        }
+    }
 };
