@@ -6,7 +6,7 @@
 #include <fstream>
 #include <algorithm>
 
-class CitaMedica;
+#include "citaMedica.h"
 
 class Paciente {
 private:
@@ -61,7 +61,7 @@ public:
         // Método para mostrar los pacientes por fecha
     static void verPacientePorFecha(const std::vector<Paciente*>& pacientes, std::string& fechaIngreso) {
         Paciente temp; // Crear un objeto temporal de la clase Paciente para llamar a esFechaValida
-
+        std::cin.ignore();
         while (true) {
             std::cout << "Ingrese la fecha a buscar (DD-MM-AAAA): ";
             std::getline(std::cin, fechaIngreso);
@@ -70,7 +70,7 @@ public:
             if (temp.esFechaValida(fechaIngreso)) {
                 break;
             } else {
-                std::cout << "No hay pacientes en esta fecha. Intenta de nuevo (DD-MM-AAAA).\n";
+                std::cout << "No hay pacientes en esta fecha. ";
             }
         }
         std::cout << "\nPacientes registrados en la fecha " << fechaIngreso << ":\n";
@@ -91,7 +91,7 @@ public:
     static void verPacientePorID(const std::vector<Paciente*>& pacientes) {
         int ID;
         bool encontrado = false;
-
+        std::cin.ignore();
         while (true) {
             std::cout << "Ingrese el ID del paciente: ";
             // Validar si la entrada es un número
@@ -108,7 +108,7 @@ public:
             // Buscar el ID en la lista de pacientes
             for (const auto& paciente : pacientes) {
                 if (paciente->getID() == ID) {
-                    std::cout << "Paciente encontrado:\n";
+                    std::cout << "Paciente encontrado:\n\n";
                     paciente->mostrarPaciente();
                     encontrado = true;
                     break;
@@ -132,6 +132,7 @@ public:
 
         // Método para mostrar paciente por nombre
     static void verPacientePorNombre(const std::vector<Paciente*>& pacientes) {
+        std::cin.ignore();
         while (true) {
             std::cout << "Ingrese el nombre del paciente: ";
             std::string nombre;
@@ -187,30 +188,36 @@ public:
         if (it != pacientes.end()) {
             Paciente* paciente = *it;
             std::cout << "Paciente encontrado: \n";
-            std::cout << "Nombre: " << nombre << ", ID: " << ID << "\n"
-            << "Fecha de ingreso: " << fechaIngreso << "\n";
+            std::cout << "Nombre: " << paciente->getNombre() << ", ID: " << paciente->getID()
+                    << "\nFecha de ingreso: " << paciente->getFechaIngreso() << "\n";
+
             std::cout << "Ingrese el nuevo nombre del paciente: ";
-            std::getline(std::cin, paciente->nombre);
+            std::string nuevoNombre;
+            std::getline(std::cin, nuevoNombre);
+            paciente->setNombre(nuevoNombre);
+
+            int nuevoID;
             std::cout << "Ingrese el nuevo ID del paciente (4 digitos): ";
             while (!(std::cin >> paciente->ID)) {
-                std::cout << "ID invalido. Intente de nuevo: ";
+                std::cout << "ID invalido. Intente de nuevo (4 digitos): ";
                 std::cin.clear();
                 std::cin.ignore();
             }
+            paciente->setID(nuevoID);
             std::cin.ignore();
             std::string nuevaFecha;
             bool fechaValida = false;
             while (!fechaValida) {
                 std::cout << "Ingrese la nueva fecha de ingreso (dd-MM-AAAA): ";
                 std::getline(std::cin, nuevaFecha);
-                if (esFechaValida(nuevaFecha)) {
+                if (paciente->esFechaValida(nuevaFecha)) {
                     fechaValida = true;
                     paciente->setFechaIngreso(nuevaFecha); // Establecer la nueva fecha
                 } else {
                     std::cout << "Error: La fecha debe tener el formato dd-MM-AAAA." << std::endl;
                 }
             }
-            std::cout << "Paciente editado correctamente." << std::endl;
+            std::cout << "Paciente editado correctamente.\n";
         } else {
             std::cout << "Paciente no encontrado.\n";
         }
@@ -255,6 +262,7 @@ public:
 
         // Método para registrar el paciente
     void registrarPaciente() {
+        std::cin.ignore();
         std::cout << "Nombre y apellidos del paciente: ";
         std::getline(std::cin, nombre);
         std::cout << "ID del paciente (1234): ";

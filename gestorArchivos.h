@@ -13,7 +13,7 @@ Medico* buscarMedicoPorID(const std::vector<Medico*>& medicos, int id);
 
 class GestorArchivos {
 public:
-// Función para guardar los datos de los pacientes
+    // Función para guardar los datos de los pacientes
 void guardarDatosPacientes(const std::vector<Paciente*>& pacientes) {
         std::ofstream archivo("pacientes.txt");
         if (!archivo.is_open()) {
@@ -30,6 +30,7 @@ void guardarDatosPacientes(const std::vector<Paciente*>& pacientes) {
 
         archivo.close();
     }
+    
     // Función para recuperar los datos de los pacientes
 void recuperarDatosPacientes(std::vector<Paciente*>& pacientes) {
     std::ifstream archivo("pacientes.txt");
@@ -53,6 +54,7 @@ void recuperarDatosPacientes(std::vector<Paciente*>& pacientes) {
 
     archivo.close();
 }
+    
     // Función para guardar los datos de los medicos
 void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
     std::ofstream archivo("medicos.txt");
@@ -72,6 +74,7 @@ void guardarDatosMedicos(const std::vector<Medico*>& medicos) {
 
     archivo.close();
 }
+    
     // Función para recuperar los datos de los medicos
 void recuperarDatosMedicos(std::vector<Medico*>& medicos) {
         std::ifstream archivo("medicos.txt");
@@ -100,6 +103,7 @@ void recuperarDatosMedicos(std::vector<Medico*>& medicos) {
 
         archivo.close();
     }
+    
     // Función para guardar los datos de las citas
 void guardarDatosCitas(const std::vector<CitaMedica*>& citas) {
     std::ofstream archivo("citas.txt");

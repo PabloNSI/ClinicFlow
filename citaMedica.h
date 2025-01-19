@@ -58,21 +58,39 @@ public:
     
     // Validar fecha en formato DD-MM-AAAA
     static bool esFechaValida(const std::string& fecha) {
-        if (fecha.size() != 10 || fecha[2] != '-' || fecha[5] != '-') return false;
+        // Verificar que la fecha tiene el formato correcto (DD-MM-AAAA)
+        if (fecha.size() != 10 || fecha[2] != '-' || fecha[5] != '-') {
+            return false;
+        }
 
+        // Extraer día, mes y año
         int dia = std::stoi(fecha.substr(0, 2));
         int mes = std::stoi(fecha.substr(3, 2));
-        int year = std::stoi(fecha.substr(6, 4));
+        int año = std::stoi(fecha.substr(6, 4));
 
-        if (dia < 1 || dia > 31 || mes < 1 || mes > 12 || year < 2000 || year > 2999) return false;
-        if ((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30) return false;
-        if (mes == 2 && dia > 28) return false;
+        // Validar día (1-31 dependiendo del mes)
+        if (dia < 1 || dia > 31) return false;
+
+        // Validar mes (1-12)
+        if (mes < 1 || mes > 12) return false;
+
+        // Validar año (año positivo)
+        if (año < 1) return false;
+
+        // Validaciones adicionales para los meses con menos de 31 días
+        if (mes == 4 || mes == 6 || mes == 9 || mes == 11) {
+            if (dia > 30) return false;
+        } else if (mes == 2) {
+            // Verificar año bisiesto
+            bool bisiesto = (año % 4 == 0 && (año % 100 != 0 || año % 400 == 0));
+            if ((bisiesto && dia > 29) || (!bisiesto && dia > 28)) return false;
+        }
 
         return true;
     }
 
 // FUNCIONES ADICIONALES DE VER CITAS MEDICAS      
-     // Función estática para ordenar por fecha (de mayor a menor)
+    // Función estática para ordenar por fecha (de mayor a menor)
     static void ordenarPorFecha(std::vector<CitaMedica*>& citas) {
         for (size_t i = 0; i < citas.size(); ++i) {
             for (size_t j = 0; j < citas.size() - i - 1; ++j) {
@@ -197,8 +215,86 @@ public:
             std::cout << "No se encontraron citas.\n";
         }
     }
-    
-        // Ver cita
+
+    // Método para mostrar citas entre dos fechas -> ver pacientes
+    static void buscarCitasEnIntervalo(const std::vector<CitaMedica*>& citas) {
+        std::string fechaInicio, fechaFin;
+
+        // Solicitar la fecha de inicio
+        do {
+            std::cout << "Ingrese la fecha de inicio (DD-MM-AAAA): ";
+            std::cin.ignore();
+            std::getline(std::cin, fechaInicio); // Leer la fecha de inicio
+            if (!esFechaValida(fechaInicio)) {
+                std::cout << "Fecha invalida, por favor intente de nuevo.\n";
+            }
+        } while (!esFechaValida(fechaInicio));
+
+        do {
+            std::cout << "Ingrese la fecha de fin (DD-MM-AAAA): ";
+            std::getline(std::cin, fechaFin);  // Leer la fecha de fin
+            if (!esFechaValida(fechaFin)) {
+                std::cout << "Fecha invalida, por favor intente de nuevo.\n";
+            }
+        } while (!esFechaValida(fechaFin));
+
+        // Convertir las fechas de inicio y fin a componentes numéricos
+        int diaInicio, mesInicio, añoInicio;
+        int diaFin, mesFin, añoFin;
+
+            diaInicio = std::stoi(fechaInicio.substr(0, 2));
+            mesInicio = std::stoi(fechaInicio.substr(3, 2));
+            añoInicio = std::stoi(fechaInicio.substr(6, 4));
+
+            diaFin = std::stoi(fechaFin.substr(0, 2));
+            mesFin = std::stoi(fechaFin.substr(3, 2));
+            añoFin = std::stoi(fechaFin.substr(6, 4));
+        
+
+        // Verificar si la fecha de inicio es mayor que la fecha de fin
+        if (añoInicio > añoFin || (añoInicio == añoFin && mesInicio > mesFin) || 
+            (añoInicio == añoFin && mesInicio == mesFin && diaInicio > diaFin)) {
+            std::cout << "La fecha de inicio no puede ser posterior a la fecha de fin.\n";
+            return; // Salir si el intervalo es inválido
+        }
+
+        bool encontrado = false;
+
+        std::cout << "\n";
+
+        // Recorremos todas las citas existentes
+        for (CitaMedica* cita : citas) {
+            // Obtener la fecha de la cita
+            std::string citaFecha = cita->getFecha();
+            int diaCita, mesCita, añoCita;
+
+            try {
+                diaCita = std::stoi(citaFecha.substr(0, 2));
+                mesCita = std::stoi(citaFecha.substr(3, 2));
+                añoCita = std::stoi(citaFecha.substr(6, 4));
+            } catch (const std::invalid_argument&) {
+                std::cout << "Error al convertir la fecha de una cita. Verifique la validez de los datos.\n";
+                continue; // Continuar con la siguiente cita si la fecha es inválida
+            }
+
+            // Verificar si la fecha de la cita está dentro del rango especificado
+            bool dentroDelRango = 
+                (añoCita > añoInicio || (añoCita == añoInicio && (mesCita > mesInicio || (mesCita == mesInicio && diaCita >= diaInicio)))) && // Fecha posterior a la de inicio
+                (añoCita < añoFin || (añoCita == añoFin && (mesCita < mesFin || (mesCita == mesFin && diaCita <= diaFin))));  // Fecha anterior a la de fin
+
+            if (dentroDelRango) {
+                cita->mostrarCita();
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            std::cout << "No se encontraron citas en el intervalo de fechas especificado.\n";
+        }
+    }
+
+// FUNCIONES DEL CRUD     
+    // Ver cita
     void mostrarCita() const {
         std::cout << "Servicio: " << medico->getServicio() << "\n"
                   << "Fecha: " << fecha << "\n"
@@ -210,19 +306,19 @@ public:
                   << "-----------" << "\n";
     }
 
-// FUNCIONES DEL CRUD 
     // Registrar una cita
     static void registrarCita(std::vector<Paciente*>& pacientes, std::vector<Medico*>& medicos, std::vector<CitaMedica*>& citas) {
         std::string fecha;
         int urgencia, pacienteID, medicoID;
 
         while (true) {
+            std::cin.ignore();
             std::cout << "Fecha de la cita (DD-MM-AAAA): ";
             std::getline(std::cin, fecha);
             if (esFechaValida(fecha)) {
                 break;
             } else {
-                std::cout << "Fecha invalida. Intenta de nuevo.\n";
+                std::cout << "Intentalo de nuevo (DD-MM-AAAA).\n";
             }
         }
         while (true) {
@@ -231,7 +327,7 @@ public:
             if (urgencia >= 1 && urgencia <= 5) {
                 break;
             } else {
-                std::cout << "Urgencia invalida. Intenta de nuevo (1-5).\n";
+                std::cout << "Intentalo de nuevo (1-5).\n";
             }
         }
         std::cin.ignore();
@@ -245,7 +341,7 @@ public:
             
             std::cout << "Medicos disponibles:\n";
             for (Medico* m : medicos) {
-                std::cout << "ID: " << m->getID() << ", Dr. " << m->getNombre() << "\n";
+                std::cout << "Dr. " << m->getNombre() << ", Servicio: " << m->getServicio() << ", ID: " << m->getID() << "\n";
             }
             std::cout << "ID del medico: ";
             std::cin >> medicoID;
@@ -261,7 +357,7 @@ public:
                 std::cout << "Cita asignada correctamente.\n";
                 break;
             } else {
-                std::cout << "Paciente o medico no encontrado. Intenta de nuevo.\n";
+                std::cout << "Paciente o medico no encontrado. Intentalo de nuevo.\n";
             }
         }
     }
@@ -370,6 +466,7 @@ public:
     
     // Eliminar una cita
     static void eliminarCita(std::vector<CitaMedica*>& citas) {
+        std::cin.ignore();
         std::string fecha;
         int pacienteID;
 

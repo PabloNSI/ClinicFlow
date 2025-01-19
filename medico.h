@@ -26,7 +26,13 @@ public:
 
     void setNombre(const std::string& nombre) { this->nombre = nombre; }
     void setID(const int& ID) { this->ID = ID; }
-    void setServicio(const std::string& servicio){ this->servicio = servicio; }
+    void setServicio(const std::string& servicio) {
+        if (esServicioValido(servicio)) {
+            this->servicio = servicio;
+        } else {
+            std::cout << "Error: El servicio ingresado no es valido." << std::endl;
+        }
+    }
     void setDisponibilidad(const bool& disponibilidad){ this->disponibilidad = disponibilidad; }
 
     bool esServicioValido(const std::string& servicio) {
@@ -51,6 +57,7 @@ public:
         // Método para mostrar los medicos por servicio
     static void verMedicoPorServicio(const std::vector<Medico*>& medicos) {
         Medico tempMedico; // Instancia para llamar a esServicioValido
+        std::cin.ignore();
         while (true) {
             std::cout << "Ingrese el servicio: ";
             std::string servicio;
@@ -97,7 +104,7 @@ public:
     static void verMedicoPorID(const std::vector<Medico*>& medicos) {
         int id;
         bool encontrado = false;
-
+        std::cin.ignore();
         while (true) {
             std::cout << "Ingrese el ID del medico: ";
             std::string input;
@@ -138,6 +145,7 @@ public:
         
         // Método para mostrar  medico por nombre
     static void verMedicoPorNombre(const std::vector<Medico*>& medicos) {
+        std::cin.ignore();
         while (true) {
             std::cout << "Ingrese el nombre del medico: ";
             std::string nombre;
@@ -171,46 +179,42 @@ public:
         
         // Método para mostrar  medico por disponibilidad
     static void verMedicoPorDisponibilidad(const std::vector<Medico*>& medicos) {
+        std::cin.ignore();
         while (true) {
-            std::cout << "Ingrese la disponibilidad del medico (1 = disponible/0 = no disponible): ";
-            bool disponibilidad;
+            std::cout << "Ingrese la disponibilidad del medico (1 = disponible / 0 = no disponible): ";
             std::string input;
             std::getline(std::cin, input);
-
-            // Validar si la entrada es un número y es válido (0 o 1)
-            try {
-                disponibilidad = std::stoi(input);
-                if (disponibilidad != 0 && disponibilidad != 1) {
-                    std::cout << "Por favor, ingrese 1 para disponible o 0 para no disponible.\n";
-                    continue;
-                }
-            } catch (const std::invalid_argument&) {
+            if (input.length() != 1) {
                 std::cout << "Por favor, ingrese un valor valido (1 o 0).\n";
                 continue;
             }
 
+            // Validar si la entrada es '0' o '1'
+            char disponibilidad = input[0];
+            if (disponibilidad != '0' && disponibilidad != '1') {
+                std::cout << "Por favor, ingrese 1 para disponible o 0 para no disponible.\n";
+                continue;
+            }
+
+            // Convertir el carácter a un valor booleano
+            bool disponibilidadBool = (disponibilidad == '1');
+
             // Buscar médicos con la disponibilidad ingresada
             bool encontrado = false;
             for (const auto& medico : medicos) {
-                if (medico->getDisponibilidad() == disponibilidad) {
-                    std::cout << "Medicos encontrados:\n";
+                if (medico->getDisponibilidad() == disponibilidadBool) {
+                    if (!encontrado) {
+                        std::cout << "Medicos encontrados:\n";
+                    }
                     medico->mostrarMedico();
                     encontrado = true;
                 }
             }
 
-            if (encontrado) {
-                break; // Salir del bucle si se encontraron médicos
-            } else {
-                std::cout << "No se encontraron medicos. \n";
-                std::cout << "Desea intentarlo nuevamente? (s = 1/n = 0): ";
-                char opcion;
-                std::cin >> opcion;
-                std::cin.ignore();
-                if (opcion == 'n' || opcion == 'N' || opcion == '0') {
-                    break;
-                }
+            if (!encontrado) {
+                std::cout << "No se encontraron medicos.\n";
             }
+            break;  
         }
     }
 
@@ -226,6 +230,7 @@ public:
 
         // Método para agregar un medico
     void registrarMedico() {
+        std::cin.ignore();
         std::cout << "Nombre y apellidos del medico: ";
         std::getline(std::cin, nombre);
 
@@ -263,6 +268,7 @@ public:
         // Método para modificar un medico
     void modificarMedico(std::vector<Medico*>& medicos) {
         int idMedico;
+        std::cin.ignore();
         std::cout << "Ingrese el ID del medico a editar: ";
         while (!(std::cin >> idMedico)) {
             std::cout << "Entrada invalida. Intente de nuevo: ";
@@ -276,10 +282,11 @@ public:
         if (it != medicos.end()) {
             Medico* medico = *it;
             std::cout << "Medico encontrado: \n";
-            std::cout << "Dr. " << nombre << "\n" 
-            << "ID: " << std::setw(4) << std::setfill('0') << ID << "\n"
-            << "Servicio: " << servicio << "\n"
-            << "Disponibilidad: " << disponibilidad << "\n";
+            std::cout << "Dr. " << medico->nombre << "\n" 
+                    << "ID: " << std::setw(4) << std::setfill('0') << medico->ID << "\n"
+                    << "Servicio: " << medico->servicio << "\n"
+                    << "Disponibilidad: " << medico->disponibilidad << "\n";
+            
             std::cout << "Ingrese el nuevo nombre del medico: ";
             std::cin.ignore();
             std::getline(std::cin, medico->nombre);
@@ -317,6 +324,7 @@ public:
         
         // Método para eliminar un medico
     static void eliminarMedico(std::vector<Medico*>& medicos) {
+        std::cin.ignore();
         int idMedico;
         std::cout << "Ingrese el ID del medico a eliminar: ";
         while (!(std::cin >> idMedico)) { 
